@@ -2,66 +2,54 @@ import React from 'react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#2F4F4F] border-t border-white/10 pt-16 pb-12">
+    <footer className="bg-[#2F4F4F] border-t border-white/10 py-8">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-6">
           
-          {/* Logo and Copyright Section */}
-          <div className="flex flex-col md:w-1/3">
-             <div className="mb-6">
-                <a href="#" className="inline-block">
-                  {/* 
-                    [사용 가이드]
-                    프로젝트의 public 폴더 또는 루트 경로에 'logo.png' 파일을 추가하세요.
-                  */}
-                  <img 
-                    src="/logo.png" 
-                    alt="(사)ESG노동사회협회" 
-                    className="h-14 w-auto object-contain"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                    }}
-                  />
-                  {/* Fallback text if image fails to load */}
-                  <span className="hidden text-white font-bold text-2xl tracking-tight">
-                    (사)<span className="text-[#A3D154]">E</span><span className="text-[#748FFC]">S</span><span className="text-[#E0C84A]">G</span>노동사회협회
-                  </span>
-                </a>
-             </div>
-             <p className="text-gray-300 text-sm leading-relaxed mb-4">
-               "ELSA는 노동이 존중받는 현장이<br/> 기업의 가장 강력한 경쟁력이 된다고 믿습니다.<br/> 글로벌 공급망 실사,<br/> 이제 ELSA와 함께 기업의 품격을 높이십시오."
-            
-             </p>
+          {/* Logo Section */}
+          <div className="flex flex-col items-center lg:items-start">
+             <a href="#" className="inline-block">
+                <img 
+                  src="/logo.png" 
+                  alt="(사)ESG노동사회협회" 
+                  className="h-10 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+                {/* Fallback text if image fails to load */}
+                <span className="hidden text-white font-bold text-xl tracking-tight">
+                  (사)<span className="text-[#A3D154]">E</span><span className="text-[#748FFC]">S</span><span className="text-[#E0C84A]">G</span>노동사회협회
+                </span>
+             </a>
           </div>
 
-          {/* Contact Info Section */}
-          <div className="flex flex-col md:w-2/3">
-             <h3 className="text-[#D4FF3F] font-bold text-lg mb-4 uppercase tracking-wide">Contact Us</h3>
-             <address className="not-italic grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-8 text-sm text-gray-200">
-                <div className="flex items-start gap-2">
-                  <span className="font-bold min-w-[60px] text-gray-400">주소</span>
-                  <span>서울시 송파구 문정로 31, 3층</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold min-w-[60px] text-gray-400">전화번호</span>
-                  <span>02-2138-1416</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold min-w-[60px] text-gray-400">이메일</span>
-                  <a href="mailto:elsa@elsa.or.lr" className="hover:text-white transition-colors">elsa@elsa.or.lr</a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold min-w-[60px] text-gray-400">팩스번호</span>
-                  <span>0000</span>
-                </div>
-             </address>
+          {/* Contact Info - Compact Row */}
+          <div className="flex flex-wrap justify-center lg:justify-end gap-x-6 gap-y-2 text-sm text-gray-300">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-400">주소</span>
+                <span>서울시 송파구 문정로 31, 3층</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-400">전화</span>
+                <span>02-2138-1416</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-400">이메일</span>
+                <a href="mailto:elsa@elsa.or.lr" className="hover:text-white transition-colors">elsa@elsa.or.lr</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-400">팩스</span>
+                <span>0000</span>
+              </div>
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+        {/* Divider & Copyright */}
+        <div className="border-t border-white/10 mt-6 pt-4 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
            <p>© 2024 (사)ESG노동사회협회. All rights reserved.</p>
-           <div className="flex space-x-6 mt-4 md:mt-0">
+           <div className="flex space-x-6 mt-3 md:mt-0">
             <a href="#" className="hover:text-[#D4FF3F] transition-colors">Instagram</a>
             <a href="#" className="hover:text-[#D4FF3F] transition-colors">Facebook</a>
             <a href="#" className="hover:text-[#D4FF3F] transition-colors">YouTube</a>
