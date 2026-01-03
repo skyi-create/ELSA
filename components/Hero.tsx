@@ -1,5 +1,4 @@
 import React from 'react';
-import '../types';
 
 interface HeroProps {
   onStartDiagnosis?: () => void;
