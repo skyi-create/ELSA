@@ -1,12 +1,16 @@
 import React from 'react';
 
-export const Intro: React.FC = () => {
+interface IntroProps {
+  onNavigate?: (subItem: string) => void;
+}
+
+export const Intro: React.FC<IntroProps> = ({ onNavigate }) => {
   const items = [
     { id: 1, title: '이사장 인사말', icon: '👋' },
     { id: 2, title: '협회 연혁', icon: '📜' },
-    { id: 3, title: '협회 주요 회원', icon: '🤝' },
-    { id: 4, title: '협회 조직도', icon: '📊' },
-    { id: 5, title: '찾아 오시는 길', icon: '📍' },
+    { id: 3, title: '주요 회원', icon: '🤝' }, // Changed to match Navbar subItems exactly if needed, or map it.
+    { id: 4, title: '조직도', icon: '📊' },
+    { id: 5, title: '찾아오시는 길', icon: '📍' },
   ];
 
   return (
@@ -22,10 +26,10 @@ export const Intro: React.FC = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
           {items.map((item) => (
-            <a 
+            <button 
               key={item.id}
-              href="#"
-              className="flex flex-col items-center justify-center p-8 rounded-xl bg-gray-50 border border-gray-100 hover:border-[#2F4F4F] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer text-center"
+              onClick={() => onNavigate && onNavigate(item.title)}
+              className="flex flex-col items-center justify-center p-8 rounded-xl bg-gray-50 border border-gray-100 hover:border-[#2F4F4F] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer text-center w-full"
             >
               <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                 {item.icon}
@@ -33,7 +37,7 @@ export const Intro: React.FC = () => {
               <h3 className="text-lg font-bold text-gray-800 group-hover:text-[#2F4F4F]">
                 {item.title}
               </h3>
-            </a>
+            </button>
           ))}
         </div>
       </div>

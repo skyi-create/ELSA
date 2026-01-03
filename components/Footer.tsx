@@ -30,8 +30,8 @@ export const Footer: React.FC = () => {
                 </a>
              </div>
              <p className="text-gray-300 text-sm leading-relaxed mb-4">
-               ESG 경영과 노동의 가치를 조화롭게 연결하여<br/> 
-               지속 가능한 미래를 만들어갑니다.
+               "ELSA는 노동이 존중받는 현장이<br/> 기업의 가장 강력한 경쟁력이 된다고 믿습니다.<br/> 글로벌 공급망 실사,<br/> 이제 ELSA와 함께 기업의 품격을 높이십시오."
+            
              </p>
           </div>
 
@@ -45,7 +45,7 @@ export const Footer: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold min-w-[60px] text-gray-400">전화번호</span>
-                  <span>02-2138-2426</span>
+                  <span>02-2138-1416</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="font-bold min-w-[60px] text-gray-400">이메일</span>

@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 
 interface NavbarProps {
   onGoHome?: () => void;
+  onNavigate?: (menu: string, subItem: string) => void;
   isHome?: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onGoHome, isHome = true }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onGoHome, onNavigate, isHome = true }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
     { 
-      name: '사업 내용', 
+      name: '주요 사업', 
       href: '#business',
       subItems: ['일자리 지원사업', '교육 및 자격사업', '컨설팅 사업', '실사, 인증 및 평가사업']
     },
@@ -22,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onGoHome, isHome = true }) => {
     { 
       name: '협회 소개', 
       href: '#intro',
-      subItems: ['이사장 인사말', '협회 연혁', '조직도', '찾아오시는 길']
+      subItems: ['이사장 인사말', '주요 회원',  '협회 연혁', '조직도', '찾아오시는 길']
     },
     { 
       name: '웹진', 
@@ -36,6 +37,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onGoHome, isHome = true }) => {
     if (onGoHome) onGoHome();
   };
 
+  const handleSubItemClick = (e: React.MouseEvent, menuName: string, subItemName: string) => {
+    e.preventDefault();
+    setIsOpen(false);
+    if (onNavigate) {
+      onNavigate(menuName, subItemName);
+    }
+  };
+
   const handleNavClick = (href: string) => {
     if (!isHome && onGoHome) {
       onGoHome();
@@ -44,6 +53,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onGoHome, isHome = true }) => {
         const element = document.querySelector(href);
         element?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
+    } else if (isHome) {
+        const element = document.querySelector(href);
+        element?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -92,7 +104,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onGoHome, isHome = true }) => {
                 <ul className="py-2">
                   {item.subItems.map((sub, idx) => (
                     <li key={idx}>
-                      <a href="#" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#2F4F4F] hover:font-bold border-b border-gray-50 last:border-0">
+                      <a 
+                        href="#" 
+                        onClick={(e) => handleSubItemClick(e, item.name, sub)}
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#2F4F4F] hover:font-bold border-b border-gray-50 last:border-0"
+                      >
                         {sub}
                       </a>
                     </li>
@@ -141,7 +157,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onGoHome, isHome = true }) => {
                 </a>
                 <div className="pl-4 space-y-2">
                    {item.subItems.map((sub, idx) => (
-                     <a key={idx} href="#" className="block text-gray-300 hover:text-white text-sm">
+                     <a 
+                       key={idx} 
+                       href="#" 
+                       onClick={(e) => handleSubItemClick(e, item.name, sub)}
+                       className="block text-gray-300 hover:text-white text-sm"
+                     >
                        - {sub}
                      </a>
                    ))}
