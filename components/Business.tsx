@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleGenAI } from "@google/genai";
 
 // Domain Type Definition
 export type Domain = {
@@ -11,7 +10,8 @@ export type Domain = {
   headerColor: string;
   icon: React.ReactNode;
   textDark?: boolean;
-  bgColorCode?: string; // For AI generation reference
+  bgColorCode: string; // For AI generation reference
+  aiPrompt: string;    // Specific subject for the image
 };
 
 export const businessDomains: Domain[] = [
@@ -22,7 +22,8 @@ export const businessDomains: Domain[] = [
     desc: '청년·중장년 인턴십 매칭 및 계속고용 지원 시스템 구축',
     details: ['청년 일경험 지원', '시니어 인턴십', '계속고용 장려금', '직무 훈련'],
     headerColor: 'bg-[#1e3a8a]', // Dark Blue
-    bgColorCode: '#EBF8FF',
+    bgColorCode: '#1e3a8a',
+    aiPrompt: 'A professional handshake between a young person and a corporate representative, symbolizing job matching and partnership.',
     icon: (
       // Default SVG fallback
       <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,6 +44,8 @@ export const businessDomains: Domain[] = [
     desc: 'ESG 공급망 실사 전문가 양성 및 산업안전 자격 과정',
     details: ['ESG 공급망 실사 1/2급', '산업안전 지도사', '노동인권/공정거래', '고용보험 환급과정'],
     headerColor: 'bg-[#047857]', // Dark Green
+    bgColorCode: '#047857',
+    aiPrompt: 'An expert teaching in a classroom or a person proudly holding a professional certificate, symbolizing education and safety qualifications.',
     icon: (
       <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="200" height="150" fill="#F0FFF4"/>
@@ -67,6 +70,8 @@ export const businessDomains: Domain[] = [
     details: ['일터혁신 컨설팅', '산업안전 진단', 'ESG 경영 공시', '산업전환 자문'],
     headerColor: 'bg-[#d9f99d]', // Light Lime (Text will be dark)
     textDark: true,
+    bgColorCode: '#d9f99d',
+    aiPrompt: 'Business consultants analyzing strategy with charts, graphs, and documents on a table, symbolizing professional consulting.',
     icon: (
       <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="200" height="150" fill="#FFFFF0"/>
@@ -88,6 +93,8 @@ export const businessDomains: Domain[] = [
     desc: 'ESG 경영 평가, ISO/SA8000 인증, 공급망 실사 및 검증',
     details: ['ESG 경영 평가', 'ISO 26000/SA8000', '보고서 검증', '노동인권 실사'],
     headerColor: 'bg-[#6b21a8]', // Purple
+    bgColorCode: '#6b21a8',
+    aiPrompt: 'A magnifying glass closely examining a checklist or document with checkmarks, symbolizing due diligence and evaluation.',
     icon: (
       <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="200" height="150" fill="#F3E8FF"/>
@@ -108,22 +115,39 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // Only generate for 'job-support' as requested
-    if (item.id !== 'job-support') return;
-
+    let isMounted = true;
     const generate = async () => {
+      // Check for API Key presence safely if possible, but assuming it exists
       try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        // Use a valid check if in browser environment where process might not exist
+        const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
+        
+        if (!apiKey) {
+           console.warn("API Key not found in process.env");
+           return;
+        }
+
+        // Dynamically import GoogleGenAI to avoid static import issues in browser
+        // @ts-ignore
+        const { GoogleGenAI } = await import("@google/genai");
+
+        const ai = new GoogleGenAI({ apiKey });
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash-image',
           contents: {
             parts: [
-               { text: `A flat vector style illustration of a young professional shaking hands with a corporate executive or connecting with a company building, symbolizing job matching. Minimalist design suitable for a business website. The background color of the image must be solid light blue with hex code ${item.bgColorCode || '#EBF8FF'}.` }
+               { text: `A flat vector style illustration. Subject: ${item.aiPrompt}. 
+               The background color of the image must be solid with hex code ${item.bgColorCode}. 
+               Important: Since the background is ${item.bgColorCode}, use ${item.textDark ? 'dark and strong' : 'light and bright'} colors for the illustration elements so they contrast well and are clearly visible.
+               Minimalist design suitable for a corporate business website. High quality, professional.` }
             ]
           },
         });
 
+        if (!isMounted) return;
+
         // Extract image
+        // @ts-ignore
         for (const part of response.candidates?.[0]?.content?.parts || []) {
            if (part.inlineData) {
              const base64EncodeString = part.inlineData.data;
@@ -132,14 +156,16 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
            }
         }
       } catch (e) {
-        console.error("Failed to generate image", e);
+        // Fallback to default icon if AI generation fails or SDK fails to load
+        console.warn("Failed to generate image or load SDK", e);
       }
     };
 
     generate();
-  }, [item.id, item.bgColorCode]);
+    return () => { isMounted = false; };
+  }, [item.id, item.bgColorCode, item.aiPrompt, item.textDark]);
 
-  if (item.id === 'job-support' && imageUrl) {
+  if (imageUrl) {
     return <img src={imageUrl} alt={item.title} className="w-full h-full object-cover" />;
   }
 
@@ -180,7 +206,7 @@ export const Business: React.FC<BusinessProps> = ({ onSelect }) => {
               </div>
 
               {/* Main Illustration Area */}
-              <div className="bg-gray-50 h-64 w-full p-8 flex items-center justify-center overflow-hidden relative">
+              <div className={`h-64 w-full flex items-center justify-center overflow-hidden relative ${item.headerColor}`}>
                  <div className="w-full h-full transform group-hover:scale-105 transition-transform duration-500">
                     <AIImage item={item} />
                  </div>
