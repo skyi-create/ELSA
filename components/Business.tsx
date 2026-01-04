@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Domain Type Definition
 export type Domain = {
@@ -9,7 +9,8 @@ export type Domain = {
   items: string[]; // Bullet points for the card
   fullDetails: string; // Detailed text for the modal/subpage
   color: string; // Accent color
-  image: string; // Fixed static image URL
+  aiPrompt: string; // Prompt for Gemini Nano Banana
+  fallbackImage: string; // Static fallback URL (3D Style)
 };
 
 export const businessDomains: Domain[] = [
@@ -25,8 +26,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
     color: '#3B82F6', // Blue
-    // 3D Avatars (Animation Style) - Represents People/Jobs
-    image: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80'
+    // Prompt: Animation/Pixar style - Two characters shaking hands or working together
+    aiPrompt: 'A high-quality 3D animation style illustration (Pixar-like) of a young professional and a senior professional shaking hands or working together in a bright office. Soft lighting, cute characters, vibrant blue tones, isometric view, minimal background.',
+    // Fallback: Abstract 3D Blue Shapes
+    fallbackImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'education',
@@ -40,8 +43,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
     color: '#10B981', // Emerald
-    // 3D Folders/Documents (Animation Style) - Represents Education/Curriculum
-    image: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?auto=format&fit=crop&w=800&q=80'
+    // Prompt: Animation/Pixar style - Graduation cap, books, certificate
+    aiPrompt: 'A high-quality 3D animation style illustration of a graduation cap, a certificate scroll, and floating books. Education theme, soft 3D render, cute style, emerald green tones, clean white background.',
+    // Fallback: 3D Green Abstract
+    fallbackImage: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'consulting',
@@ -55,8 +60,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
     color: '#F59E0B', // Amber
-    // 3D Abstract Shapes/Bubbles (Animation Style) - Represents Strategy/Consulting
-    image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80'
+    // Prompt: Animation/Pixar style - Lightbulb, gears, charts
+    aiPrompt: 'A high-quality 3D animation style illustration of a lightbulb, gears, and a rising growth chart. Business strategy theme, 3D icon set style, vibrant amber and yellow tones, soft shadows.',
+    // Fallback: 3D Orange/Yellow Abstract
+    fallbackImage: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'due-diligence',
@@ -70,21 +77,100 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
     color: '#8B5CF6', // Violet
-    // 3D Checklist/Task (Animation Style) - Represents Assessment/Due Diligence
-    image: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=800&q=80'
+    // Prompt: Animation/Pixar style - Magnifying glass, shield, checklist
+    aiPrompt: 'A high-quality 3D animation style illustration of a magnifying glass examining a document with a shield icon. Security and verification theme, 3D render, soft purple tones, secure atmosphere.',
+    // Fallback: 3D Purple/Blue Abstract
+    fallbackImage: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=800&q=80'
   },
   ];
 
-// Simple Fixed Image Component
-const FixedImage: React.FC<{ item: Domain }> = ({ item }) => {
+// Component: AI Image Generator with LocalStorage Caching & Fallback
+const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
+  // Start with the fallback image to ensure no broken links during build/deploy
+  const [imageUrl, setImageUrl] = useState<string>(item.fallbackImage);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    // Version key to manage caching. 'v_anim_1' ensures we only cache the animation style images.
+    const storageKey = `elsa_biz_img_${item.id}_v_anim_1`;
+
+    const generate = async () => {
+      // 1. Check LocalStorage first to keep the image "fixed" for the user
+      const cachedImage = localStorage.getItem(storageKey);
+      if (cachedImage) {
+        setImageUrl(cachedImage);
+        return;
+      }
+
+      // 2. Try to generate via API if Key exists
+      // Note: On Netlify, if API_KEY is not set in Environment Variables, this will gracefully fail to the fallback.
+      try {
+        const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
+        
+        if (!apiKey) {
+           // No API Key found (common in build/deploy if not configured). Keep fallback.
+           return;
+        }
+
+        setLoading(true);
+
+        // Dynamic import to avoid build errors if package is missing in some environments
+        // @ts-ignore
+        const { GoogleGenAI } = await import("@google/genai");
+
+        const ai = new GoogleGenAI({ apiKey });
+        
+        // Using 'gemini-2.5-flash-image' (Nano Banana) as requested
+        const response = await ai.models.generateContent({
+          model: 'gemini-2.5-flash-image',
+          contents: {
+            parts: [
+               { text: item.aiPrompt }
+            ]
+          },
+          // Attempt to use a config to guide consistency, though image models vary.
+          config: {
+             // @ts-ignore - Seed is supported in some configs, purely optional hint here
+             seed: 42 
+          }
+        });
+
+        if (!isMounted) return;
+
+        // @ts-ignore
+        for (const part of response.candidates?.[0]?.content?.parts || []) {
+           if (part.inlineData) {
+             const base64EncodeString = part.inlineData.data;
+             const finalUrl = `data:image/png;base64,${base64EncodeString}`;
+             
+             // Save to state and cache to "fix" the image
+             setImageUrl(finalUrl);
+             localStorage.setItem(storageKey, finalUrl);
+             break;
+           }
+        }
+      } catch (e) {
+        console.warn("AI generation failed or skipped, using fallback.", e);
+        // Do nothing, imageUrl is already set to fallbackImage
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    generate();
+    return () => { isMounted = false; };
+  }, [item.id, item.aiPrompt]);
+
   return (
      <img 
-        src={item.image} 
+        src={imageUrl} 
         alt={item.title} 
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+        className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'opacity-80 blur-sm' : 'opacity-100 blur-0'} transition-all`} 
      />
   );
 };
+
 
 interface BusinessProps {
   onSelect?: (id: string) => void;
@@ -117,7 +203,8 @@ export const Business: React.FC<BusinessProps> = ({ onSelect }) => {
               {/* Image Area - Expanded Height */}
               <div className="w-full h-56 bg-gray-50 relative overflow-hidden">
                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-300"></div>
-                 <FixedImage item={item} />
+                 {/* Using AIImage to handle generation and fallback */}
+                 <AIImage item={item} />
                  
                  {/* Floating Subtitle Badge */}
                  <div className="absolute top-4 left-4 z-20">
@@ -192,7 +279,7 @@ export const BusinessDetail: React.FC<BusinessDetailProps> = ({ id, onBack }) =>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8 flex flex-col md:flex-row">
           <div className="w-full md:w-5/12 bg-gray-100 relative min-h-[300px] md:min-h-auto">
              <div className="absolute inset-0 w-full h-full">
-                 <FixedImage item={domain} />
+                 <AIImage item={domain} />
              </div>
              {/* Gradient Overlay */}
              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/10"></div>
