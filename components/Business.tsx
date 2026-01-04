@@ -5,129 +5,101 @@ export type Domain = {
   id: string;
   title: string;
   subtitle: string;
-  desc: string;
-  details: string[];
-  headerColor: string;
-  icon: React.ReactNode;
-  textDark?: boolean;
-  bgColorCode: string; // For AI generation reference
+  intro: string; // One line summary
+  items: string[]; // Bullet points for the card
+  fullDetails: string; // Detailed text for the modal/subpage
+  color: string; // Accent color
   aiPrompt: string;    // Specific subject for the image
 };
 
 export const businessDomains: Domain[] = [
   {
     id: 'job-support',
-    title: '일자리 지원사업',
-    subtitle: 'Job Support Business',
-    desc: '청년·중장년 인턴십 매칭 및 계속고용 지원 시스템 구축',
-    details: ['청년 일경험 지원', '시니어 인턴십', '계속고용 장려금', '직무 훈련'],
-    headerColor: 'bg-[#1e3a8a]', // Dark Blue
-    bgColorCode: '#1e3a8a',
-    aiPrompt: 'A professional handshake between a young person and a corporate representative, symbolizing job matching and partnership.',
-    icon: (
-      // Default SVG fallback
-      <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="200" height="150" fill="#EBF8FF"/>
-        <circle cx="50" cy="60" r="25" fill="#4299E1" opacity="0.8"/>
-        <circle cx="150" cy="60" r="25" fill="#48BB78" opacity="0.8"/>
-        <path d="M75 60 H125" stroke="#2D3748" strokeWidth="3" strokeDasharray="5 5"/>
-        <path d="M50 95 C50 115 80 125 100 125 C120 125 150 115 150 95" stroke="#2B6CB0" strokeWidth="4" strokeLinecap="round"/>
-        <text x="50" y="65" fontSize="10" textAnchor="middle" fill="white">YOUTH</text>
-        <text x="150" y="65" fontSize="10" textAnchor="middle" fill="white">SENIOR</text>
-      </svg>
-    ),
+    title: '일자리 지원',
+    subtitle: 'Job Support',
+    intro: '전 세대를 아우르는 맞춤형 일자리 창출',
+    items: [
+      '미래내일 청년 일경험 사업',
+      '계속 고용 지원 사업',
+      '시니어 인턴십 지원'
+    ],
+    fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
+    color: '#3B82F6', // Blue
+    aiPrompt: 'A simple, modern vector illustration of a puzzle piece being connected between a young person and an older person in business attire. Symbolizing connection, employment, and generational harmony. Flat design, blue and white theme, minimal background.',
   },
   {
     id: 'education',
-    title: '교육 및 자격사업',
-    subtitle: 'Education & Qualification',
-    desc: 'ESG 공급망 실사 전문가 양성 및 산업안전 자격 과정',
-    details: ['ESG 공급망 실사 1/2급', '산업안전 지도사', '노동인권/공정거래', '고용보험 환급과정'],
-    headerColor: 'bg-[#047857]', // Dark Green
-    bgColorCode: '#047857',
-    aiPrompt: 'An expert teaching in a classroom or a person proudly holding a professional certificate, symbolizing education and safety qualifications.',
-    icon: (
-      <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="200" height="150" fill="#F0FFF4"/>
-        <rect x="30" y="30" width="100" height="60" rx="2" fill="#2D3748" stroke="#1A202C" strokeWidth="2"/>
-        <text x="80" y="60" fontSize="12" textAnchor="middle" fill="white" fontWeight="bold">ESG</text>
-        <text x="80" y="75" fontSize="10" textAnchor="middle" fill="#A0AEC0">공급망 실사</text>
-        <rect x="140" y="20" width="40" height="50" fill="white" stroke="#D69E2E" strokeWidth="2"/>
-        <circle cx="160" cy="45" r="10" fill="#ECC94B" opacity="0.5"/>
-        <path d="M150 55 L170 55" stroke="#CBD5E0" strokeWidth="2"/>
-        <path d="M150 60 L165 60" stroke="#CBD5E0" strokeWidth="2"/>
-        <rect x="140" y="100" width="40" height="10" rx="1" fill="#4299E1"/>
-        <rect x="140" y="112" width="40" height="10" rx="1" fill="#ED8936"/>
-        <rect x="140" y="124" width="40" height="10" rx="1" fill="#48BB78"/>
-      </svg>
-    ),
+    title: '교육 및 자격',
+    subtitle: 'Education',
+    intro: 'ESG 및 산업안전 전문 인재 양성',
+    items: [
+      'ESG 공급망 실사 관리사 (1급/2급)',
+      'ESG 경영 및 산업안전보건 교육',
+      '노동 및 인권 교육 프로그램'
+    ],
+    fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
+    color: '#10B981', // Emerald
+    aiPrompt: 'A simple, modern vector illustration of a graduation cap, a certificate scroll, and a safety helmet arranged together. Symbolizing education, qualification, and safety. Flat design, green and white theme, minimal background.',
   },
   {
     id: 'consulting',
     title: '컨설팅 사업',
-    subtitle: 'Consulting Business',
-    desc: '일터혁신, 산업안전, ESG 경영 전환을 위한 전문 컨설팅',
-    details: ['일터혁신 컨설팅', '산업안전 진단', 'ESG 경영 공시', '산업전환 자문'],
-    headerColor: 'bg-[#d9f99d]', // Light Lime (Text will be dark)
-    textDark: true,
-    bgColorCode: '#d9f99d',
-    aiPrompt: 'Business consultants analyzing strategy with charts, graphs, and documents on a table, symbolizing professional consulting.',
-    icon: (
-      <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="200" height="150" fill="#FFFFF0"/>
-        <rect x="40" y="30" width="80" height="50" fill="white" stroke="#CBD5E0" strokeWidth="2"/>
-        <path d="M50 65 L65 55 L80 60 L100 45" stroke="#4299E1" strokeWidth="2"/>
-        <circle cx="40" cy="110" r="15" fill="#2D3748"/>
-        <path d="M25 135 Q40 110 55 135" fill="#2D3748"/>
-        <circle cx="160" cy="110" r="15" fill="#2D3748"/>
-        <path d="M145 135 Q160 110 175 135" fill="#2D3748"/>
-        <rect x="60" y="100" width="80" height="40" fill="#E2E8F0" rx="2"/>
-        <path d="M160 30 Q180 30 180 50 Q180 70 160 70 Q140 70 140 50 Q140 30 160 30 Z" fill="#48BB78"/>
-      </svg>
-    ),
+    subtitle: 'Consulting',
+    intro: '기업의 지속가능한 성장을 위한 솔루션',
+    items: [
+      '일터 혁신 및 산업전환 컨설팅',
+      'ESG 경영 전략 수립',
+      '중대재해 예방 및 안전 체계 구축'
+    ],
+    fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
+    color: '#F59E0B', // Amber
+    aiPrompt: 'A simple, modern vector illustration of an upward trending graph on a tablet or board, with a lightbulb idea icon. Symbolizing innovation, strategy, and growth. Flat design, orange and white theme, minimal background.',
   },
   {
     id: 'due-diligence',
-    title: '실사, 인증 및 평가사업',
-    subtitle: 'Certification & Evaluation',
-    desc: 'ESG 경영 평가, ISO/SA8000 인증, 공급망 실사 및 검증',
-    details: ['ESG 경영 평가', 'ISO 26000/SA8000', '보고서 검증', '노동인권 실사'],
-    headerColor: 'bg-[#6b21a8]', // Purple
-    bgColorCode: '#6b21a8',
-    aiPrompt: 'A magnifying glass closely examining a checklist or document with checkmarks, symbolizing due diligence and evaluation.',
-    icon: (
-      <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="200" height="150" fill="#F3E8FF"/>
-        <circle cx="100" cy="75" r="40" stroke="#805AD5" strokeWidth="2" fill="white"/>
-        <path d="M60 75 Q100 95 140 75" stroke="#E9D8FD" strokeWidth="1"/>
-        <path d="M100 35 Q80 75 100 115" stroke="#E9D8FD" strokeWidth="1"/>
-        <circle cx="120" cy="95" r="20" stroke="#2D3748" strokeWidth="3" fill="#ECC94B" fillOpacity="0.3"/>
-        <path d="M135 110 L155 130" stroke="#2D3748" strokeWidth="6" strokeLinecap="round"/>
-        <circle cx="160" cy="40" r="15" stroke="#E53E3E" strokeWidth="2" strokeDasharray="2 2"/>
-        <text x="160" y="44" fontSize="6" textAnchor="middle" fill="#E53E3E" fontWeight="bold">CERTIFIED</text>
-      </svg>
-    ),
+    title: '실사, 인증 및 평가',
+    subtitle: 'Certification',
+    intro: '글로벌 스탠다드 부합성 검증',
+    items: [
+      'ESG 공급망 실사 및 경영 평가',
+      'ESG 인증 및 노동인권 실사',
+      '지속가능경영 보고서 검증'
+    ],
+    fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
+    color: '#8B5CF6', // Violet
+    aiPrompt: 'A simple, modern vector illustration of a magnifying glass examining a document with a shield icon. Symbolizing evaluation, verification, and trust. Flat design, purple and white theme, minimal background.',
   },
 ];
 
-// Component to render generated AI image
+// Component to render generated AI image with LocalStorage Caching
 const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
+    // Updated key version to force refresh with new prompt style
+    const storageKey = `elsa_biz_img_${item.id}_v4`; 
+
     const generate = async () => {
-      // Check for API Key presence safely if possible, but assuming it exists
+      // 1. Check LocalStorage first
+      const cachedImage = localStorage.getItem(storageKey);
+      if (cachedImage) {
+        setImageUrl(cachedImage);
+        return;
+      }
+
+      // 2. If not in cache, generate via API
       try {
-        // Use a valid check if in browser environment where process might not exist
+        setLoading(true);
         const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
         
         if (!apiKey) {
-           console.warn("API Key not found in process.env");
+           console.warn("API Key not found");
            return;
         }
 
-        // Dynamically import GoogleGenAI to avoid static import issues in browser
+        // Dynamically import GoogleGenAI
         // @ts-ignore
         const { GoogleGenAI } = await import("@google/genai");
 
@@ -136,10 +108,7 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
           model: 'gemini-2.5-flash-image',
           contents: {
             parts: [
-               { text: `A flat vector style illustration. Subject: ${item.aiPrompt}. 
-               The background color of the image must be solid with hex code ${item.bgColorCode}. 
-               Important: Since the background is ${item.bgColorCode}, use ${item.textDark ? 'dark and strong' : 'light and bright'} colors for the illustration elements so they contrast well and are clearly visible.
-               Minimalist design suitable for a corporate business website. High quality, professional.` }
+               { text: `${item.aiPrompt} Use the style of high-quality flat vector art icons. White background. Clean lines. No text in the image.` }
             ]
           },
         });
@@ -151,25 +120,42 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
         for (const part of response.candidates?.[0]?.content?.parts || []) {
            if (part.inlineData) {
              const base64EncodeString = part.inlineData.data;
-             setImageUrl(`data:image/png;base64,${base64EncodeString}`);
+             const finalUrl = `data:image/png;base64,${base64EncodeString}`;
+             
+             // Save to state and cache
+             setImageUrl(finalUrl);
+             localStorage.setItem(storageKey, finalUrl);
              break;
            }
         }
       } catch (e) {
-        // Fallback to default icon if AI generation fails or SDK fails to load
-        console.warn("Failed to generate image or load SDK", e);
+        console.warn("Failed to generate image", e);
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
 
     generate();
     return () => { isMounted = false; };
-  }, [item.id, item.bgColorCode, item.aiPrompt, item.textDark]);
+  }, [item.id, item.aiPrompt]);
 
-  if (imageUrl) {
-    return <img src={imageUrl} alt={item.title} className="w-full h-full object-cover" />;
+  if (loading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-50">
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-[#2F4F4F] rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
-  return <>{item.icon}</>;
+  if (imageUrl) {
+    return <img src={imageUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />;
+  }
+
+  return (
+      <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300">
+          <span className="text-4xl">🖼️</span>
+      </div>
+  );
 };
 
 
@@ -179,63 +165,65 @@ interface BusinessProps {
 
 export const Business: React.FC<BusinessProps> = ({ onSelect }) => {
   return (
-    <section id="business" className="py-24 bg-gray-50">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-[#2F4F4F] mb-6">주요 사업 소개</h2>
-          <div className="w-20 h-1.5 bg-[#2F4F4F] mx-auto rounded-full mb-6"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            ELSA는 전문적인 교육과 컨설팅, 엄격한 실사 및 평가를 통해<br/>
-            지속가능한 기업 생태계를 만들어갑니다.
-          </p>
+    <section id="business" className="py-24 bg-white relative overflow-hidden">
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div>
+                <h2 className="text-3xl md:text-5xl font-bold text-[#2F4F4F] mb-4">주요 사업</h2>
+                <div className="w-12 h-1.5 bg-[#D4FF3F] rounded-full"></div>
+                <p className="text-gray-600 mt-4 max-w-xl text-lg">
+                    ELSA는 전문적인 역량을 바탕으로<br/> 기업과 노동이 상생하는 미래를 만들어갑니다.
+                </p>
+            </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {businessDomains.map((item) => (
             <button 
               key={item.id}
               onClick={() => onSelect && onSelect(item.id)}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-gray-100 flex flex-col group h-full text-left"
+              className="group relative bg-white rounded-2xl shadow-md border border-gray-100 hover:border-[#2F4F4F] hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 text-left flex flex-col h-full overflow-hidden"
             >
-              {/* Header Bar */}
-              <div className={`${item.headerColor} py-4 px-6 relative overflow-hidden w-full`}>
-                <h3 className={`text-xl md:text-2xl font-bold ${item.textDark ? 'text-gray-900' : 'text-white'} relative z-10`}>
-                  {item.title}
-                </h3>
-                <div className="absolute right-0 top-0 h-full w-20 bg-white/10 skew-x-12 transform translate-x-8"></div>
-              </div>
+              {/* Top Accent Bar */}
+              <div className="h-1.5 w-full" style={{ backgroundColor: item.color }}></div>
 
-              {/* Main Illustration Area */}
-              <div className={`h-64 w-full flex items-center justify-center overflow-hidden relative ${item.headerColor}`}>
-                 <div className="w-full h-full transform group-hover:scale-105 transition-transform duration-500">
-                    <AIImage item={item} />
-                 </div>
+              {/* Image Area */}
+              <div className="w-full h-48 bg-gray-50 relative overflow-hidden">
+                 <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors z-10"></div>
+                 <AIImage item={item} />
               </div>
 
               {/* Content Area */}
-              <div className="p-6 flex-grow flex flex-col bg-white w-full">
-                <div className="mb-4">
-                  <span className="text-xs font-bold tracking-wider text-[#2F4F4F] uppercase opacity-70 mb-1 block">
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: item.color }}>
                     {item.subtitle}
-                  </span>
-                  <p className="text-gray-700 text-lg font-medium leading-relaxed">
-                    {item.desc}
-                  </p>
                 </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#2F4F4F] transition-colors">
+                    {item.title}
+                </h3>
                 
-                <div className="mt-auto pt-4 border-t border-gray-100 w-full">
-                  <div className="flex flex-wrap gap-2">
-                    {item.details.map((detail, idx) => (
-                      <span key={idx} className="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full font-medium">
-                        #{detail}
+                {/* Highlighted Items List */}
+                <ul className="space-y-3 mb-6 flex-grow">
+                  {item.items.map((subItem, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke={item.color}>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 font-semibold text-[15px] leading-snug">
+                        {subItem}
                       </span>
-                    ))}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Learn More Button Style */}
+                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between text-sm font-medium text-gray-400 group-hover:text-[#2F4F4F]">
+                  <span>자세히 보기</span>
+                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#2F4F4F] group-hover:text-white transition-all">
+                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                   </div>
                 </div>
               </div>
-
-              {/* Footer Strip */}
-              <div className={`h-2 ${item.headerColor} w-full`}></div>
             </button>
           ))}
         </div>
@@ -272,60 +260,47 @@ export const BusinessDetail: React.FC<BusinessDetailProps> = ({ id, onBack }) =>
         </div>
 
         {/* Header Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-          <div className={`${domain.headerColor} h-48 md:h-64 relative overflow-hidden flex items-center justify-center`}>
-            <div className="absolute inset-0 bg-black/10"></div>
-             <h1 className={`text-3xl md:text-5xl font-bold ${domain.textDark ? 'text-gray-900' : 'text-white'} relative z-10 text-center px-4`}>
-               {domain.title}
-             </h1>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8 flex flex-col md:flex-row">
+          <div className="w-full md:w-1/3 bg-gray-100 relative min-h-[300px] md:min-h-auto">
+             <div className="absolute inset-0 w-full h-full">
+                 <AIImage item={domain} />
+             </div>
           </div>
-          <div className="p-8 md:p-12">
-            <h2 className="text-xl font-bold text-[#2F4F4F] mb-4 uppercase tracking-wider">{domain.subtitle}</h2>
-            <p className="text-2xl md:text-3xl text-gray-800 font-bold leading-tight mb-6">
-              {domain.desc}
+          <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col justify-center">
+            <h2 className="text-sm font-bold mb-2 uppercase tracking-wider" style={{ color: domain.color }}>{domain.subtitle}</h2>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              {domain.title}
+            </h1>
+            <p className="text-gray-600 leading-relaxed text-lg mb-8">
+               {domain.fullDetails}
             </p>
-            <p className="text-gray-600 leading-relaxed text-lg">
-              (사)ESG노동사회협회는 {domain.title}을 통해 기업의 지속가능경영을 지원하고 
-              사회적 가치를 실현합니다. 전문적인 지식과 풍부한 경험을 바탕으로 
-              최고의 솔루션을 제공하겠습니다.
-            </p>
+            <div className="flex gap-4">
+                <button className="px-6 py-3 bg-[#2F4F4F] text-white rounded-lg font-bold hover:bg-[#1e3333] transition-colors shadow-md">
+                    상담 및 문의하기
+                </button>
+            </div>
           </div>
         </div>
 
         {/* Detailed Items Grid */}
-        <h3 className="text-2xl font-bold text-gray-800 mb-6 px-2 border-l-4 border-[#2F4F4F] pl-4">
-          세부 사업 항목
+        <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <span className="w-1.5 h-8 bg-[#2F4F4F] rounded-full"></span>
+            세부 추진 항목
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-           {domain.details.map((item, idx) => (
-             <div key={idx} className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:border-[#2F4F4F] transition-colors group">
-               <div className="flex items-start gap-4">
-                 <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center text-[#2F4F4F] font-bold text-xl group-hover:bg-[#2F4F4F] group-hover:text-[#D4FF3F] transition-colors">
+           {domain.items.map((item, idx) => (
+             <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-[#2F4F4F] transition-all hover:shadow-md group flex items-center gap-5">
+                 <div className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center font-bold text-xl group-hover:bg-[#2F4F4F] group-hover:text-[#D4FF3F] transition-colors flex-shrink-0 shadow-sm" style={{ color: domain.color }}>
                    {idx + 1}
                  </div>
                  <div>
-                   <h4 className="text-xl font-bold text-gray-900 mb-2">{item}</h4>
-                   <p className="text-gray-600 leading-relaxed">
-                     {item}에 대한 체계적인 프로세스와 전문 인력을 보유하고 있으며, 
-                     고객사의 니즈에 맞춘 맞춤형 서비스를 제공합니다.
-                     성공적인 수행을 위해 단계별 전략을 수립하여 지원합니다.
+                   <h4 className="text-xl font-bold text-gray-900 mb-1">{item}</h4>
+                   <p className="text-sm text-gray-500">
+                     전문성을 바탕으로 한 맞춤형 솔루션을 제공합니다.
                    </p>
                  </div>
-               </div>
              </div>
            ))}
-        </div>
-
-        {/* Contact / CTA */}
-        <div className="bg-[#2F4F4F] rounded-2xl p-10 text-center text-white">
-           <h3 className="text-2xl font-bold mb-4">사업 관련 문의</h3>
-           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-             {domain.title}에 대해 더 궁금하신 점이 있으신가요? 
-             전문 담당자가 친절하게 안내해 드립니다.
-           </p>
-           <button className="px-8 py-3 bg-[#D4FF3F] text-[#0F2522] font-bold rounded-lg hover:bg-white transition-colors">
-             문의하기
-           </button>
         </div>
       </div>
     </div>
