@@ -28,9 +28,9 @@ export const businessDomains: Domain[] = [
     fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
     color: '#3B82F6', // Blue
     // Prompt: 3D Cute Character Handshake (Blue Theme) - Pixar style
-    aiPrompt: 'A high-quality 3D animation style illustration of two cute business characters (one young, one senior) shaking hands or collaborating in a futuristic office. Soft isometric view, vibrant blue tones, Pixar style, rendering, minimal background, soft lighting.',
-    // Fallback: 3D Handshake abstract
-    fallbackImage: 'https://images.unsplash.com/photo-1629904853716-f004b6b8b132?auto=format&fit=crop&w=800&q=80'
+    aiPrompt: 'A cute 3D Pixar-style illustration of two business characters shaking hands warmly. Soft isometric view, vibrant blue color palette, clean smooth 3D rendering, friendly atmosphere, minimal background.',
+    // Fallback: Abstract Blue 3D Shapes (Clean & Techy)
+    fallbackImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'education',
@@ -45,9 +45,9 @@ export const businessDomains: Domain[] = [
     fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
     color: '#10B981', // Emerald
     // Prompt: 3D Graduation Cap & Books (Green Theme) - Education
-    aiPrompt: 'A high-quality 3D animation style illustration of a green graduation cap, a diploma scroll, and floating books. Education theme, soft 3D render, emerald green tones, cute style, clean white background, high detail.',
-    // Fallback: 3D Education/Books
-    fallbackImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=800&q=80'
+    aiPrompt: 'A cute 3D Pixar-style illustration of a green graduation cap, diploma, and stacked books. Emerald green color palette, soft lighting, isometric view, education theme, clean 3D render.',
+    // Fallback: Abstract Green 3D Waves
+    fallbackImage: 'https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'consulting',
@@ -62,9 +62,9 @@ export const businessDomains: Domain[] = [
     fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
     color: '#F59E0B', // Amber
     // Prompt: 3D Lightbulb & Gears (Amber Theme) - Strategy
-    aiPrompt: 'A high-quality 3D animation style illustration of a glowing lightbulb, golden gears, and an upward growth chart. Business strategy and innovation theme, vibrant amber and yellow tones, soft shadows, 3D icon style, clay render.',
-    // Fallback: 3D Idea/Lightbulb
-    fallbackImage: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80'
+    aiPrompt: 'A cute 3D Pixar-style illustration of a glowing yellow lightbulb and mechanical gears. Innovation and strategy theme, amber and gold color palette, soft shadows, clay render style.',
+    // Fallback: Abstract Amber/Gold 3D Fluid
+    fallbackImage: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'due-diligence',
@@ -79,9 +79,9 @@ export const businessDomains: Domain[] = [
     fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
     color: '#8B5CF6', // Violet
     // Prompt: 3D Magnifying Glass & Shield (Purple Theme) - Security
-    aiPrompt: 'A high-quality 3D animation style illustration of a magnifying glass scanning a secure document with a shield icon. Security and verification theme, soft purple tones, 3D render, secure atmosphere, isometric.',
-    // Fallback: 3D Abstract Shapes
-    fallbackImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80'
+    aiPrompt: 'A cute 3D Pixar-style illustration of a magnifying glass and a security shield. Purple and violet color palette, isometric view, safety and verification theme, soft 3D rendering.',
+    // Fallback: Abstract Purple 3D Curves
+    fallbackImage: 'https://images.unsplash.com/photo-1614850523060-8da1d56e37ad?auto=format&fit=crop&w=800&q=80'
   },
   ];
 
@@ -90,11 +90,12 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
   // Start with the fallback image to ensure no broken links during build/deploy
   const [imageUrl, setImageUrl] = useState<string>(item.fallbackImage);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    // Version key to manage caching. 'v_anim_final' ensures we use the new animation prompts.
-    const storageKey = `elsa_biz_img_${item.id}_v_anim_final`;
+    // Version key to manage caching. Updated to 'v_pixar_3d' to force refresh with new prompt.
+    const storageKey = `elsa_biz_img_${item.id}_v_pixar_3d`;
 
     const generate = async () => {
       // 1. Check LocalStorage first to keep the image "fixed" for the user
@@ -111,8 +112,6 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
         
         if (!apiKey) {
            // No API Key found (common in build/deploy if not configured). Keep fallback.
-           // You can uncomment this log to debug locally
-           // console.log("No API Key available, using fallback.");
            return;
         }
 
@@ -128,9 +127,6 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
                { text: item.aiPrompt }
             ]
           },
-          config: {
-             // Optional config for consistency if supported
-          }
         });
 
         if (!isMounted) return;
@@ -144,12 +140,14 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
              // Save to state and cache to "fix" the image
              setImageUrl(finalUrl);
              localStorage.setItem(storageKey, finalUrl);
-             break;
+             setLoading(false);
+             return;
            }
         }
       } catch (e) {
-        // console.warn("AI generation failed or skipped, using fallback.", e);
-        // Do nothing, imageUrl is already set to fallbackImage
+        console.warn("AI generation failed or skipped, using fallback.", e);
+        setError(true);
+        // Do nothing else, imageUrl is already set to fallbackImage
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -160,22 +158,23 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
   }, [item.id, item.aiPrompt]);
 
   return (
-     <div className="w-full h-full relative overflow-hidden">
+     <div className="w-full h-full relative overflow-hidden bg-gray-100">
          <img 
             src={imageUrl} 
             alt={item.title} 
-            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'opacity-80 blur-[2px]' : 'opacity-100 blur-0'} transition-all`} 
+            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'scale-105 blur-sm opacity-80' : 'scale-100 blur-0 opacity-100'}`} 
          />
+         
+         {/* Loading Indicator */}
          {loading && (
-             <div className="absolute inset-0 flex items-center justify-center bg-gray-50/50 backdrop-blur-sm z-10">
-                 <div className="flex flex-col items-center gap-2">
-                    <div className="w-6 h-6 border-2 border-[#2F4F4F] border-t-transparent rounded-full animate-spin"></div>
-                    <span className="text-xs font-medium text-[#2F4F4F] animate-pulse">AI 드로잉 중...</span>
-                 </div>
+             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/30 backdrop-blur-[2px] z-10">
+                 <div className="w-8 h-8 border-4 border-[#2F4F4F] border-t-transparent rounded-full animate-spin mb-2"></div>
+                 <span className="text-xs font-bold text-[#2F4F4F] bg-white/80 px-2 py-1 rounded-full shadow-sm">AI 드로잉 중...</span>
              </div>
          )}
+
          {/* Overlay gradient for text readability */}
-         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
      </div>
   );
 };
@@ -216,7 +215,7 @@ export const Business: React.FC<BusinessProps> = ({ onSelect }) => {
                  
                  {/* Floating Subtitle Badge */}
                  <div className="absolute top-4 left-4 z-20">
-                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold shadow-sm uppercase tracking-wider" style={{ color: item.color }}>
+                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold shadow-sm uppercase tracking-wider border border-white/20" style={{ color: item.color }}>
                         {item.subtitle}
                     </span>
                  </div>

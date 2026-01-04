@@ -346,7 +346,7 @@ const ResultStep: React.FC<{
   userInfo: any, 
   onReset: () => void 
 }> = ({ scores, userInfo, onReset }) => {
-  const totalScore = Object.values(scores).reduce((a, b) => a + b, 0) / 5;
+  const totalScore = Object.values(scores).reduce((a: number, b: number) => a + b, 0) / 5;
 
   const handleDownload = () => {
     window.print();
