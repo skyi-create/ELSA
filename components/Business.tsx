@@ -25,7 +25,7 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
     color: '#3B82F6', // Blue
-    aiPrompt: 'A simple, modern vector illustration of a puzzle piece being connected between a young person and an older person in business attire. Symbolizing connection, employment, and generational harmony. Flat design, blue and white theme, minimal background.',
+    aiPrompt: 'A minimal and clean vector illustration of a young professional and a senior professional shaking hands or working together, symbolizing employment support. Flat design, solid colors, white background. No text.',
   },
   {
     id: 'education',
@@ -34,12 +34,12 @@ export const businessDomains: Domain[] = [
     intro: 'ESG 및 산업안전 전문 인재 양성',
     items: [
       'ESG 공급망 실사 관리사 (1급/2급)',
-      'ESG 경영 및 산업안전보건 교육',
+      'ESG 경영, 산업안전보건 교육',
       '노동 및 인권 교육 프로그램'
     ],
     fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
     color: '#10B981', // Emerald
-    aiPrompt: 'A simple, modern vector illustration of a graduation cap, a certificate scroll, and a safety helmet arranged together. Symbolizing education, qualification, and safety. Flat design, green and white theme, minimal background.',
+    aiPrompt: 'A minimal and clean vector illustration of a certificate scroll, a graduation cap, and a safety helmet. Symbolizing education and qualifications. Flat design, solid colors, white background. No text.',
   },
   {
     id: 'consulting',
@@ -49,11 +49,11 @@ export const businessDomains: Domain[] = [
     items: [
       '일터 혁신 및 산업전환 컨설팅',
       'ESG 경영 전략 수립',
-      '중대재해 예방 및 안전 체계 구축'
+      '중대재해 예방 솔루션'
     ],
     fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
     color: '#F59E0B', // Amber
-    aiPrompt: 'A simple, modern vector illustration of an upward trending graph on a tablet or board, with a lightbulb idea icon. Symbolizing innovation, strategy, and growth. Flat design, orange and white theme, minimal background.',
+    aiPrompt: 'A minimal and clean vector illustration of a business strategy chart, a lightbulb, and a gear. Symbolizing consulting and innovation. Flat design, solid colors, white background. No text.',
   },
   {
     id: 'due-diligence',
@@ -67,9 +67,9 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
     color: '#8B5CF6', // Violet
-    aiPrompt: 'A simple, modern vector illustration of a magnifying glass examining a document with a shield icon. Symbolizing evaluation, verification, and trust. Flat design, purple and white theme, minimal background.',
+    aiPrompt: 'A minimal and clean vector illustration of a magnifying glass checking a checklist document, with a shield icon. Symbolizing due diligence and verification. Flat design, solid colors, white background. No text.',
   },
-];
+  ];
 
 // Component to render generated AI image with LocalStorage Caching
 const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
@@ -78,8 +78,8 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
 
   useEffect(() => {
     let isMounted = true;
-    // Updated key version to force refresh with new prompt style
-    const storageKey = `elsa_biz_img_${item.id}_v4`; 
+    // Version key to manage prompt updates. If you change prompts, increment v5 -> v6
+    const storageKey = `elsa_biz_img_${item.id}_v5`; 
 
     const generate = async () => {
       // 1. Check LocalStorage first
@@ -108,7 +108,7 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
           model: 'gemini-2.5-flash-image',
           contents: {
             parts: [
-               { text: `${item.aiPrompt} Use the style of high-quality flat vector art icons. White background. Clean lines. No text in the image.` }
+               { text: `${item.aiPrompt} Make it a high-quality, clean 2D vector animation style illustration. Use the accent color ${item.color} as a primary tone. White background.` }
             ]
           },
         });
@@ -137,7 +137,7 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
 
     generate();
     return () => { isMounted = false; };
-  }, [item.id, item.aiPrompt]);
+  }, [item.id, item.aiPrompt, item.color]);
 
   if (loading) {
     return (
@@ -148,7 +148,7 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
   }
 
   if (imageUrl) {
-    return <img src={imageUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />;
+    return <img src={imageUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />;
   }
 
   return (
@@ -182,45 +182,47 @@ export const Business: React.FC<BusinessProps> = ({ onSelect }) => {
             <button 
               key={item.id}
               onClick={() => onSelect && onSelect(item.id)}
-              className="group relative bg-white rounded-2xl shadow-md border border-gray-100 hover:border-[#2F4F4F] hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 text-left flex flex-col h-full overflow-hidden"
+              className="group relative bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-gray-100 hover:border-[#2F4F4F] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-2 transition-all duration-300 text-left flex flex-col h-full overflow-hidden"
             >
               {/* Top Accent Bar */}
-              <div className="h-1.5 w-full" style={{ backgroundColor: item.color }}></div>
+              <div className="h-2 w-full" style={{ backgroundColor: item.color }}></div>
 
-              {/* Image Area */}
-              <div className="w-full h-48 bg-gray-50 relative overflow-hidden">
-                 <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors z-10"></div>
+              {/* Image Area - Expanded Height */}
+              <div className="w-full h-56 bg-gray-50 relative overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-300"></div>
                  <AIImage item={item} />
+                 
+                 {/* Floating Subtitle Badge */}
+                 <div className="absolute top-4 left-4 z-20">
+                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold shadow-sm uppercase tracking-wider" style={{ color: item.color }}>
+                        {item.subtitle}
+                    </span>
+                 </div>
               </div>
 
               {/* Content Area */}
-              <div className="p-6 flex flex-col flex-grow">
-                <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: item.color }}>
-                    {item.subtitle}
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#2F4F4F] transition-colors">
+              <div className="p-8 flex flex-col flex-grow">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 group-hover:text-[#2F4F4F] transition-colors">
                     {item.title}
                 </h3>
                 
-                {/* Highlighted Items List */}
-                <ul className="space-y-3 mb-6 flex-grow">
+                {/* Highlighted Items List with Custom Bullets */}
+                <ul className="space-y-4 mb-8 flex-grow">
                   {item.items.map((subItem, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5">
-                      <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke={item.color}>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-gray-700 font-semibold text-[15px] leading-snug">
+                    <li key={idx} className="flex items-start gap-3">
+                      <div className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }}></div>
+                      <span className="text-gray-700 font-bold text-[16px] leading-snug">
                         {subItem}
                       </span>
                     </li>
                   ))}
                 </ul>
 
-                {/* Learn More Button Style */}
-                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between text-sm font-medium text-gray-400 group-hover:text-[#2F4F4F]">
-                  <span>자세히 보기</span>
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#2F4F4F] group-hover:text-white transition-all">
-                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                {/* Bottom Action Area */}
+                <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-between group-hover:border-[#2F4F4F]/20 transition-colors">
+                  <span className="text-sm font-bold text-gray-400 group-hover:text-[#2F4F4F] transition-colors">자세히 보기</span>
+                  <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#2F4F4F] group-hover:text-white transition-all duration-300 transform group-hover:translate-x-1">
+                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                   </div>
                 </div>
               </div>
@@ -261,44 +263,48 @@ export const BusinessDetail: React.FC<BusinessDetailProps> = ({ id, onBack }) =>
 
         {/* Header Section */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8 flex flex-col md:flex-row">
-          <div className="w-full md:w-1/3 bg-gray-100 relative min-h-[300px] md:min-h-auto">
+          <div className="w-full md:w-5/12 bg-gray-100 relative min-h-[300px] md:min-h-auto">
              <div className="absolute inset-0 w-full h-full">
                  <AIImage item={domain} />
              </div>
+             {/* Gradient Overlay */}
+             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/10"></div>
           </div>
-          <div className="w-full md:w-2/3 p-8 md:p-12 flex flex-col justify-center">
-            <h2 className="text-sm font-bold mb-2 uppercase tracking-wider" style={{ color: domain.color }}>{domain.subtitle}</h2>
+          <div className="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center">
+            <h2 className="text-sm font-bold mb-2 uppercase tracking-wider flex items-center gap-2" style={{ color: domain.color }}>
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: domain.color }}></span>
+                {domain.subtitle}
+            </h2>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               {domain.title}
             </h1>
-            <p className="text-gray-600 leading-relaxed text-lg mb-8">
+            <p className="text-gray-600 leading-relaxed text-lg mb-8 border-l-4 border-gray-200 pl-4">
                {domain.fullDetails}
             </p>
             <div className="flex gap-4">
-                <button className="px-6 py-3 bg-[#2F4F4F] text-white rounded-lg font-bold hover:bg-[#1e3333] transition-colors shadow-md">
-                    상담 및 문의하기
+                <button className="px-8 py-4 bg-[#2F4F4F] text-white rounded-xl font-bold hover:bg-[#1e3333] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 flex items-center gap-2">
+                    <span>상담 및 문의하기</span>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
                 </button>
             </div>
           </div>
         </div>
 
         {/* Detailed Items Grid */}
-        <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <span className="w-1.5 h-8 bg-[#2F4F4F] rounded-full"></span>
+        <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+            <div className="w-2 h-8 bg-[#2F4F4F] rounded-full"></div>
             세부 추진 항목
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
            {domain.items.map((item, idx) => (
-             <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-[#2F4F4F] transition-all hover:shadow-md group flex items-center gap-5">
-                 <div className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center font-bold text-xl group-hover:bg-[#2F4F4F] group-hover:text-[#D4FF3F] transition-colors flex-shrink-0 shadow-sm" style={{ color: domain.color }}>
+             <div key={idx} className="bg-white p-8 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 hover:border-[#2F4F4F] transition-all duration-300 hover:shadow-md group flex flex-col h-full">
+                 <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center font-bold text-xl group-hover:bg-[#2F4F4F] group-hover:text-[#D4FF3F] transition-colors shadow-sm mb-4" style={{ color: domain.color }}>
                    {idx + 1}
                  </div>
-                 <div>
-                   <h4 className="text-xl font-bold text-gray-900 mb-1">{item}</h4>
-                   <p className="text-sm text-gray-500">
-                     전문성을 바탕으로 한 맞춤형 솔루션을 제공합니다.
-                   </p>
-                 </div>
+                 <h4 className="text-xl font-bold text-gray-900 mb-3">{item}</h4>
+                 <p className="text-sm text-gray-500 leading-relaxed mt-auto">
+                   해당 분야의 전문 컨설턴트와 교육 전문가가 체계적인 솔루션을 제공하여 귀사의 역량을 강화합니다.
+                 </p>
              </div>
            ))}
         </div>
