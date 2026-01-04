@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { GoogleGenAI } from "@google/genai";
 
 // Domain Type Definition
 export type Domain = {
@@ -10,7 +11,7 @@ export type Domain = {
   fullDetails: string; // Detailed text for the modal/subpage
   color: string; // Accent color
   aiPrompt: string; // Prompt for Gemini Nano Banana
-  fallbackImage: string; // Static fallback URL (3D Style)
+  fallbackImage: string; // Static fallback URL (Matches content)
 };
 
 export const businessDomains: Domain[] = [
@@ -26,10 +27,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
     color: '#3B82F6', // Blue
-    // Prompt: Animation/Pixar style - Two characters shaking hands or working together
-    aiPrompt: 'A high-quality 3D animation style illustration (Pixar-like) of a young professional and a senior professional shaking hands or working together in a bright office. Soft lighting, cute characters, vibrant blue tones, isometric view, minimal background.',
-    // Fallback: Abstract 3D Blue Shapes
-    fallbackImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Cute Character Handshake (Blue Theme)
+    aiPrompt: 'A cute 3D animation style illustration of two friendly business characters shaking hands in a modern office. Soft isometric view, vibrant blue tones, Pixar style, high quality render, minimal background.',
+    // Fallback: Handshake
+    fallbackImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'education',
@@ -43,10 +44,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
     color: '#10B981', // Emerald
-    // Prompt: Animation/Pixar style - Graduation cap, books, certificate
-    aiPrompt: 'A high-quality 3D animation style illustration of a graduation cap, a certificate scroll, and floating books. Education theme, soft 3D render, cute style, emerald green tones, clean white background.',
-    // Fallback: 3D Green Abstract
-    fallbackImage: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Graduation Cap & Books (Green Theme)
+    aiPrompt: 'A cute 3D animation style illustration of a green graduation cap, a diploma scroll, and floating books. Education theme, soft 3D render, emerald green tones, clean white background, high quality.',
+    // Fallback: Books/Education
+    fallbackImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'consulting',
@@ -60,10 +61,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
     color: '#F59E0B', // Amber
-    // Prompt: Animation/Pixar style - Lightbulb, gears, charts
-    aiPrompt: 'A high-quality 3D animation style illustration of a lightbulb, gears, and a rising growth chart. Business strategy theme, 3D icon set style, vibrant amber and yellow tones, soft shadows.',
-    // Fallback: 3D Orange/Yellow Abstract
-    fallbackImage: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Lightbulb & Gears (Amber Theme)
+    aiPrompt: 'A cute 3D animation style illustration of a glowing lightbulb, gears, and an upward growth chart. Business strategy and innovation theme, vibrant amber and yellow tones, soft shadows, 3D icon style.',
+    // Fallback: Lightbulb
+    fallbackImage: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'due-diligence',
@@ -77,10 +78,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
     color: '#8B5CF6', // Violet
-    // Prompt: Animation/Pixar style - Magnifying glass, shield, checklist
-    aiPrompt: 'A high-quality 3D animation style illustration of a magnifying glass examining a document with a shield icon. Security and verification theme, 3D render, soft purple tones, secure atmosphere.',
-    // Fallback: 3D Purple/Blue Abstract
-    fallbackImage: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Magnifying Glass & Shield (Purple Theme)
+    aiPrompt: 'A cute 3D animation style illustration of a magnifying glass scanning a secure document with a shield icon. Security and verification theme, soft purple tones, 3D render, secure atmosphere.',
+    // Fallback: Magnifying Glass
+    fallbackImage: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=800&q=80'
   },
   ];
 
@@ -92,8 +93,8 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
 
   useEffect(() => {
     let isMounted = true;
-    // Version key to manage caching. 'v_anim_1' ensures we only cache the animation style images.
-    const storageKey = `elsa_biz_img_${item.id}_v_anim_1`;
+    // Version key to manage caching. 'v_anim_final' ensures we use the new animation prompts.
+    const storageKey = `elsa_biz_img_${item.id}_v_anim_final`;
 
     const generate = async () => {
       // 1. Check LocalStorage first to keep the image "fixed" for the user
@@ -104,7 +105,6 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
       }
 
       // 2. Try to generate via API if Key exists
-      // Note: On Netlify, if API_KEY is not set in Environment Variables, this will gracefully fail to the fallback.
       try {
         const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
         
@@ -115,13 +115,9 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
 
         setLoading(true);
 
-        // Dynamic import to avoid build errors if package is missing in some environments
-        // @ts-ignore
-        const { GoogleGenAI } = await import("@google/genai");
-
         const ai = new GoogleGenAI({ apiKey });
         
-        // Using 'gemini-2.5-flash-image' (Nano Banana) as requested
+        // Using 'gemini-2.5-flash-image' (Nano Banana) for generation
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash-image',
           contents: {
@@ -129,10 +125,8 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
                { text: item.aiPrompt }
             ]
           },
-          // Attempt to use a config to guide consistency, though image models vary.
           config: {
-             // @ts-ignore - Seed is supported in some configs, purely optional hint here
-             seed: 42 
+             // Optional config for consistency if supported
           }
         });
 
@@ -163,11 +157,18 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
   }, [item.id, item.aiPrompt]);
 
   return (
-     <img 
-        src={imageUrl} 
-        alt={item.title} 
-        className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'opacity-80 blur-sm' : 'opacity-100 blur-0'} transition-all`} 
-     />
+     <div className="w-full h-full relative">
+         <img 
+            src={imageUrl} 
+            alt={item.title} 
+            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'opacity-50 blur-sm' : 'opacity-100 blur-0'} transition-all`} 
+         />
+         {loading && (
+             <div className="absolute inset-0 flex items-center justify-center">
+                 <div className="w-8 h-8 border-4 border-[#2F4F4F] border-t-transparent rounded-full animate-spin"></div>
+             </div>
+         )}
+     </div>
   );
 };
 
