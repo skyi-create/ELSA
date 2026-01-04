@@ -296,17 +296,38 @@ export const BusinessDetail: React.FC<BusinessDetailProps> = ({ id, onBack }) =>
             세부 추진 항목
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-           {domain.items.map((item, idx) => (
-             <div key={idx} className="bg-white p-8 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 hover:border-[#2F4F4F] transition-all duration-300 hover:shadow-md group flex flex-col h-full">
+           {domain.items.map((item, idx) => {
+             const isSpecialItem = item === '미래내일 청년 일경험 사업';
+             return (
+               <div 
+                 key={idx} 
+                 className={`bg-white p-8 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 hover:border-[#2F4F4F] transition-all duration-300 hover:shadow-md group flex flex-col h-full ${isSpecialItem ? 'md:col-span-2 lg:col-span-3' : ''}`}
+               >
                  <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center font-bold text-xl group-hover:bg-[#2F4F4F] group-hover:text-[#D4FF3F] transition-colors shadow-sm mb-4" style={{ color: domain.color }}>
                    {idx + 1}
                  </div>
                  <h4 className="text-xl font-bold text-gray-900 mb-3">{item}</h4>
+                 
+                 {isSpecialItem && (
+                    <div className="w-full mb-6">
+                        <img 
+                          src="/youth_job_experience.png" 
+                          alt="2025 청년 일경험 지원사업 (인턴형) 완전 정복" 
+                          className="w-full h-auto rounded-lg border border-gray-200 shadow-sm"
+                          onError={(e) => e.currentTarget.style.display = 'none'}
+                        />
+                    </div>
+                 )}
+
                  <p className="text-sm text-gray-500 leading-relaxed mt-auto">
-                   해당 분야의 전문 컨설턴트와 교육 전문가가 체계적인 솔루션을 제공하여 귀사의 역량을 강화합니다.
+                   {isSpecialItem 
+                    ? "2025년 청년 일경험 지원사업(인턴형)에 대한 상세 안내입니다. 참여 대상, 지원 내용, 절차 등을 인포그래픽으로 한눈에 확인하세요."
+                    : "해당 분야의 전문 컨설턴트와 교육 전문가가 체계적인 솔루션을 제공하여 귀사의 역량을 강화합니다."
+                   }
                  </p>
-             </div>
-           ))}
+               </div>
+             );
+           })}
         </div>
       </div>
     </div>
