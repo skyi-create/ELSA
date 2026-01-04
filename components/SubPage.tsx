@@ -53,6 +53,100 @@ const SubSidebar: React.FC<{
 // Content Renderer
 const ContentArea: React.FC<{ category: string, title: string }> = ({ category, title }) => {
     
+    // Layout: Chairman's Greeting (Specific)
+    if (title === '이사장 인사말') {
+        return (
+            <div className="bg-white rounded-xl border border-gray-200 p-8 md:p-12 shadow-sm min-h-[500px]">
+                <h3 className="text-3xl font-bold text-[#2F4F4F] mb-8 pb-4 border-b border-gray-100">{title}</h3>
+                
+                <div className="flex flex-col lg:flex-row gap-10 items-start">
+                    {/* Profile Section */}
+                    <div className="w-full lg:w-1/3 flex flex-col items-center flex-shrink-0">
+                        {/* 
+                            Photo Container 
+                            - Uses aspect-[3/4] for a professional portrait look.
+                            - object-[65%_center] focuses on the right-center where the person is in the provided landscape photo.
+                        */}
+                        <div className="w-full aspect-[3/4] max-w-[300px] bg-gray-100 rounded-2xl overflow-hidden shadow-lg mb-6 relative border border-gray-200">
+                             <img 
+                                src="/chairman.jpg" 
+                                alt="이성기 이사장" 
+                                className="w-full h-full object-cover object-[65%_center]"
+                                onError={(e) => {
+                                    // Fallback if image is missing
+                                    e.currentTarget.style.display = 'none'; 
+                                    const parent = e.currentTarget.parentElement;
+                                    if(parent) {
+                                        parent.innerHTML = `
+                                            <div class="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-200">
+                                                <svg class="w-20 h-20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                                            </div>
+                                        `;
+                                    }
+                                }}
+                             />
+                        </div>
+                        <div className="text-center w-full max-w-[300px]">
+                            <h4 className="text-2xl font-bold text-gray-900 mb-1">이 성 기</h4>
+                            <p className="text-[#2F4F4F] font-bold text-sm mb-4">(사)ESG노동사회협회 이사장</p>
+                            <div className="text-gray-500 text-sm space-y-2 bg-gray-50 p-5 rounded-xl w-full border border-gray-100 shadow-sm text-left">
+                                <p className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#2F4F4F] mt-1.5 flex-shrink-0"></span>
+                                    <span>前 고용노동부 차관</span>
+                                </p>
+                                <p className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#2F4F4F] mt-1.5 flex-shrink-0"></span>
+                                    <span>前 한국기술교육대학교 총장</span>
+                                </p>
+                                <p className="flex items-start gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#2F4F4F] mt-1.5 flex-shrink-0"></span>
+                                    <span>제32회 행정고시 합격</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Text Section */}
+                    <div className="w-full lg:w-2/3 prose prose-lg max-w-none text-gray-700">
+                        <h4 className="text-2xl font-bold text-[#2F4F4F] mb-8 relative">
+                            <span className="relative z-10">"기업의 지속가능한 성장과 노동존중 사회,<br/> ELSA가 함께 엽니다."</span>
+                            <div className="absolute bottom-1 left-0 w-24 h-3 bg-[#D4FF3F] -z-0 opacity-60 rounded-full"></div>
+                        </h4>
+                        
+                        <div className="space-y-6 text-[16px] leading-8 text-justify font-light text-gray-800">
+                            <p>
+                                안녕하십니까. <strong>(사)ESG노동사회협회(ELSA) 이사장 이성기</strong>입니다.
+                            </p>
+                            <p>
+                                최근 글로벌 경제 시스템은 급격한 전환기를 맞이하고 있습니다. EU CSDDD(기업 지속가능성 실사 지침)를 비롯한 글로벌 공급망 규제는 이제 우리 기업들에게 단순한 '사회 공헌'을 넘어 실질적인 <strong>'생존 전략'</strong>이 되었습니다. 특히 노동 환경과 인권 경영을 중심으로 하는 'S(Social)' 분야의 대응은 기업 경쟁력의 핵심 지표가 되었습니다.
+                            </p>
+                            <p>
+                                ELSA는 <strong>대한민국 최고의 고용노동 행정 및 법률 전문가 집단</strong>입니다. 우리는 35년 이상 노동 정책을 입안하고 집행해온 고위 관료, 노동법 학자, 그리고 풍부한 현장 경험을 가진 공인노무사와 경영지도사들이 뜻을 모아 설립했습니다.
+                            </p>
+                            <p>
+                                우리의 차별점은 '책상 위'가 아닌 <strong>'일터 현장'</strong>에 있습니다. 지난 3년간 100여 개 기업과 함께하며 청년 일경험 지원과 일터혁신 컨설팅을 성공적으로 수행해온 실전 데이터는 ELSA만의 독보적인 자산입니다. 우리는 복잡한 법리와 규제를 나열하는 데 그치지 않고, 기업이 즉시 적용 가능한 '실행 가능한 솔루션'을 제공합니다.
+                            </p>
+                            <p>
+                                글로벌 공급망 실사의 선도 기관으로서 함께하겠습니다. ELSA는 기업이 규제를 넘어 지속가능한 성장을 이루고, 노동자가 존중받는 건강한 산업 생태계를 조성하는 데 앞장서겠습니다. 대한민국 기업들이 글로벌 시장에서 가장 신뢰받는 파트너로 우뚝 설 수 있도록, 저희 ELSA가 든든한 전략적 동반자가 되어 드릴 것을 약속드립니다.
+                            </p>
+                            <p>
+                                감사합니다.
+                            </p>
+                        </div>
+                        
+                        <div className="mt-12 flex justify-end items-center gap-4">
+                            <div className="text-right">
+                                <p className="text-lg font-bold text-gray-900">(사)ESG노동사회협회 이사장</p>
+                                <p className="text-3xl font-serif font-bold mt-1 text-[#2F4F4F]">이 성 기</p>
+                            </div>
+                            {/* Signature Placeholder if needed */}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // Layout 1: Board List (Community)
     if (category === '커뮤니티') {
         return (
@@ -133,20 +227,6 @@ const ContentArea: React.FC<{ category: string, title: string }> = ({ category, 
                         협회는 노동의 가치를 존중하고 기업의 지속가능한 성장을 지원하기 위해 최선을 다하고 있습니다.
                     </p>
                 </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                
-                {title === '이사장 인사말' && (
-                     <div className="mt-8 flex items-center gap-4">
-                         <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">Photo</div>
-                         <div>
-                             <p className="font-bold text-xl text-gray-900">이 사 장</p>
-                             <p className="text-[#2F4F4F]">(사)ESG노동사회협회 이사장</p>
-                         </div>
-                     </div>
-                )}
                 
                 {title === '조직도' && (
                     <div className="mt-8 border p-8 rounded bg-gray-50 text-center">
