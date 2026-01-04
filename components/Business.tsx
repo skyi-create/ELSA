@@ -10,6 +10,7 @@ export type Domain = {
   fullDetails: string; // Detailed text for the modal/subpage
   color: string; // Accent color
   aiPrompt: string;    // Specific subject for the image
+  fallbackImage: string; // Fallback image URL
 };
 
 export const businessDomains: Domain[] = [
@@ -26,6 +27,7 @@ export const businessDomains: Domain[] = [
     fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
     color: '#3B82F6', // Blue
     aiPrompt: 'A minimal and clean vector illustration of a young professional and a senior professional shaking hands or working together, symbolizing employment support. Flat design, solid colors, white background. No text.',
+    fallbackImage: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'education',
@@ -40,6 +42,7 @@ export const businessDomains: Domain[] = [
     fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
     color: '#10B981', // Emerald
     aiPrompt: 'A minimal and clean vector illustration of a certificate scroll, a graduation cap, and a safety helmet. Symbolizing education and qualifications. Flat design, solid colors, white background. No text.',
+    fallbackImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'consulting',
@@ -54,6 +57,7 @@ export const businessDomains: Domain[] = [
     fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
     color: '#F59E0B', // Amber
     aiPrompt: 'A minimal and clean vector illustration of a business strategy chart, a lightbulb, and a gear. Symbolizing consulting and innovation. Flat design, solid colors, white background. No text.',
+    fallbackImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'due-diligence',
@@ -68,18 +72,20 @@ export const businessDomains: Domain[] = [
     fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
     color: '#8B5CF6', // Violet
     aiPrompt: 'A minimal and clean vector illustration of a magnifying glass checking a checklist document, with a shield icon. Symbolizing due diligence and verification. Flat design, solid colors, white background. No text.',
+    fallbackImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80'
   },
   ];
 
-// Component to render generated AI image with LocalStorage Caching
+// Component to render generated AI image with LocalStorage Caching and Fallback
 const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  // Initialize with fallback image immediately
+  const [imageUrl, setImageUrl] = useState<string>(item.fallbackImage);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    // Version key to manage prompt updates. If you change prompts, increment v5 -> v6
-    const storageKey = `elsa_biz_img_${item.id}_v5`; 
+    // Version key to manage prompt updates.
+    const storageKey = `elsa_biz_img_${item.id}_v7`; 
 
     const generate = async () => {
       // 1. Check LocalStorage first
@@ -89,15 +95,16 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
         return;
       }
 
-      // 2. If not in cache, generate via API
+      // 2. Try to generate via API if key exists
       try {
-        setLoading(true);
         const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
         
+        // If no API key is available (e.g. Netlify client-side), stop here and keep using fallback.
         if (!apiKey) {
-           console.warn("API Key not found");
            return;
         }
+
+        setLoading(true);
 
         // Dynamically import GoogleGenAI
         // @ts-ignore
@@ -129,7 +136,8 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
            }
         }
       } catch (e) {
-        console.warn("Failed to generate image", e);
+        console.warn("AI generation failed, using fallback.", e);
+        // Do nothing, imageUrl is already fallback
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -139,22 +147,12 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
     return () => { isMounted = false; };
   }, [item.id, item.aiPrompt, item.color]);
 
-  if (loading) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-50">
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-[#2F4F4F] rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
-  if (imageUrl) {
-    return <img src={imageUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />;
-  }
-
   return (
-      <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300">
-          <span className="text-4xl">🖼️</span>
-      </div>
+     <img 
+        src={imageUrl} 
+        alt={item.title} 
+        className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'transition-opacity opacity-90' : ''}`} 
+     />
   );
 };
 
