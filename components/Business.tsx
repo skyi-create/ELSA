@@ -27,10 +27,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
     color: '#3B82F6', // Blue
-    // Prompt: 3D Cute Character Handshake (Blue Theme)
-    aiPrompt: 'A cute 3D animation style illustration of two friendly business characters shaking hands in a modern office. Soft isometric view, vibrant blue tones, Pixar style, high quality render, minimal background.',
-    // Fallback: Handshake
-    fallbackImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Cute Character Handshake (Blue Theme) - Pixar style
+    aiPrompt: 'A high-quality 3D animation style illustration of two cute business characters (one young, one senior) shaking hands or collaborating in a futuristic office. Soft isometric view, vibrant blue tones, Pixar style, rendering, minimal background, soft lighting.',
+    // Fallback: 3D Handshake abstract
+    fallbackImage: 'https://images.unsplash.com/photo-1629904853716-f004b6b8b132?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'education',
@@ -44,10 +44,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
     color: '#10B981', // Emerald
-    // Prompt: 3D Graduation Cap & Books (Green Theme)
-    aiPrompt: 'A cute 3D animation style illustration of a green graduation cap, a diploma scroll, and floating books. Education theme, soft 3D render, emerald green tones, clean white background, high quality.',
-    // Fallback: Books/Education
-    fallbackImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Graduation Cap & Books (Green Theme) - Education
+    aiPrompt: 'A high-quality 3D animation style illustration of a green graduation cap, a diploma scroll, and floating books. Education theme, soft 3D render, emerald green tones, cute style, clean white background, high detail.',
+    // Fallback: 3D Education/Books
+    fallbackImage: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'consulting',
@@ -61,10 +61,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
     color: '#F59E0B', // Amber
-    // Prompt: 3D Lightbulb & Gears (Amber Theme)
-    aiPrompt: 'A cute 3D animation style illustration of a glowing lightbulb, gears, and an upward growth chart. Business strategy and innovation theme, vibrant amber and yellow tones, soft shadows, 3D icon style.',
-    // Fallback: Lightbulb
-    fallbackImage: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Lightbulb & Gears (Amber Theme) - Strategy
+    aiPrompt: 'A high-quality 3D animation style illustration of a glowing lightbulb, golden gears, and an upward growth chart. Business strategy and innovation theme, vibrant amber and yellow tones, soft shadows, 3D icon style, clay render.',
+    // Fallback: 3D Idea/Lightbulb
+    fallbackImage: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'due-diligence',
@@ -78,10 +78,10 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
     color: '#8B5CF6', // Violet
-    // Prompt: 3D Magnifying Glass & Shield (Purple Theme)
-    aiPrompt: 'A cute 3D animation style illustration of a magnifying glass scanning a secure document with a shield icon. Security and verification theme, soft purple tones, 3D render, secure atmosphere.',
-    // Fallback: Magnifying Glass
-    fallbackImage: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=800&q=80'
+    // Prompt: 3D Magnifying Glass & Shield (Purple Theme) - Security
+    aiPrompt: 'A high-quality 3D animation style illustration of a magnifying glass scanning a secure document with a shield icon. Security and verification theme, soft purple tones, 3D render, secure atmosphere, isometric.',
+    // Fallback: 3D Abstract Shapes
+    fallbackImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80'
   },
   ];
 
@@ -105,11 +105,14 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
       }
 
       // 2. Try to generate via API if Key exists
+      // Note: On Netlify, if API_KEY is not set in Environment Variables, this will gracefully fail to the fallback.
       try {
         const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined;
         
         if (!apiKey) {
            // No API Key found (common in build/deploy if not configured). Keep fallback.
+           // You can uncomment this log to debug locally
+           // console.log("No API Key available, using fallback.");
            return;
         }
 
@@ -145,7 +148,7 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
            }
         }
       } catch (e) {
-        console.warn("AI generation failed or skipped, using fallback.", e);
+        // console.warn("AI generation failed or skipped, using fallback.", e);
         // Do nothing, imageUrl is already set to fallbackImage
       } finally {
         if (isMounted) setLoading(false);
@@ -157,17 +160,22 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
   }, [item.id, item.aiPrompt]);
 
   return (
-     <div className="w-full h-full relative">
+     <div className="w-full h-full relative overflow-hidden">
          <img 
             src={imageUrl} 
             alt={item.title} 
-            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'opacity-50 blur-sm' : 'opacity-100 blur-0'} transition-all`} 
+            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${loading ? 'opacity-80 blur-[2px]' : 'opacity-100 blur-0'} transition-all`} 
          />
          {loading && (
-             <div className="absolute inset-0 flex items-center justify-center">
-                 <div className="w-8 h-8 border-4 border-[#2F4F4F] border-t-transparent rounded-full animate-spin"></div>
+             <div className="absolute inset-0 flex items-center justify-center bg-gray-50/50 backdrop-blur-sm z-10">
+                 <div className="flex flex-col items-center gap-2">
+                    <div className="w-6 h-6 border-2 border-[#2F4F4F] border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-xs font-medium text-[#2F4F4F] animate-pulse">AI 드로잉 중...</span>
+                 </div>
              </div>
          )}
+         {/* Overlay gradient for text readability */}
+         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
      </div>
   );
 };
@@ -202,8 +210,7 @@ export const Business: React.FC<BusinessProps> = ({ onSelect }) => {
               <div className="h-2 w-full" style={{ backgroundColor: item.color }}></div>
 
               {/* Image Area - Expanded Height */}
-              <div className="w-full h-56 bg-gray-50 relative overflow-hidden">
-                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-300"></div>
+              <div className="w-full h-64 bg-gray-50 relative overflow-hidden">
                  {/* Using AIImage to handle generation and fallback */}
                  <AIImage item={item} />
                  
