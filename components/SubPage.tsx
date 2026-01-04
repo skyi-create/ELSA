@@ -50,10 +50,71 @@ const SubSidebar: React.FC<{
     );
 };
 
+// Data for Members
+const memberGroups = [
+    {
+        title: "고용노동 정책 및 정책 연구 (Policy & Research)",
+        desc: "정부 정책 수립 및 집행의 최고위급 경험을 바탕으로, 기업에 가장 실효성 있는 정책 대응 전략을 제시합니다.",
+        members: [
+            { name: "이성기 박사", title: "IT정책경영학", desc: "전 고용노동부 차관 및 서울지방고용노동청장 (35년 경력), 고용노동정책 및 ESG 전략 전문가" },
+            { name: "나영돈 박사", title: "노동경제학", desc: "전 한국고용정보원 이사장 및 고용노동부 고용정책실장 (34년 경력), HRD·HRM 및 국제노동기준 전문가" },
+            { name: "황기돈 박사", title: "노동경제학", desc: "전 한국노동교육원 사무총장 및 한국고용정보원 본부장 (30년 경력), 독일공급망실사법 및 노사관계 전문가" },
+            { name: "송홍석 교수", title: "숙명여대", desc: "전 중앙노동위원회 사무처장 및 고용노동부 직업능력개발국장 (30년 경력), 중대재해 및 노동법 전문가" },
+        ]
+    },
+    {
+        title: "ESG 공급망 실사 및 산업안전 (ESG & Safety)",
+        desc: "글로벌 규제(CSDDD) 대응과 중대재해 예방을 위한 실질적인 현장 진단 및 컨설팅을 수행합니다.",
+        members: [
+            { name: "함병호 박사", title: "산업안전", desc: "전 고용노동부 화학안전과장 및 인천북부지청장 (35년 경력), 위험성평가 및 화학안전 전문가" },
+            { name: "이준원 박사", title: "산업안전", desc: "현 숭실대학교 교수 및 전 안전보건공단 본부장 (35년 경력), 중대재해 예방 및 안전관리 수준 평가 전문가" },
+            { name: "양선모 박사", title: "산업공학", desc: "CSDDD·ESG 경영진단 및 수준 평가, ERP 컨설팅 전문가 (30년 경력)" },
+            { name: "강병노 박사", title: "기술지도사", desc: "공급망 실사, 탄소배출권 및 ESG 진단 평가 전문가 (30년 경력)" },
+            { name: "이종재 박사", title: "현 PSI 대표", desc: "전 이투데이 대표, ESG 경영 평가·교육 및 공급망 실사 전반 전문가" },
+        ]
+    },
+    {
+        title: "노동법률 및 기업경영 진단 (Legal & Management)",
+        desc: "노동·인권 리스크 관리와 지속가능경영 보고서 작성 등 기업의 법적·경영적 신뢰도를 제고합니다.",
+        members: [
+            { name: "최정철 박사", title: "경영학", desc: "인하대학교 교수, 노동·인권 및 지속가능경영보고서(GRI) 전문가" },
+            { name: "류호식 대표", title: "공인노무사", desc: "라온 노무법인 대표, 노동·인권 및 중대재해 예방 컨설팅 전문가 (30년 경력)" },
+            { name: "정택근 대표", title: "공인노무사", desc: "전 고용노동부 근로감독과장 (35년 경력), 노동·인권 실사 및 ESG 경영평가 전문가" },
+            { name: "성의경 대표", title: "경영지도사", desc: "전 신용보증기금 영업본부장, 기업 진단 및 경영 컨설팅 전문가 (35년 경력)" },
+            { name: "노기후 대표", title: "경영지도사", desc: "공급망 실사, 탄소배출권, CDP 및 CBAM 대응 전문가 (30년 경력)" },
+        ]
+    }
+];
+
+// Data for History
+const historyData = [
+    { year: 2025, month: 12, content: "미래내일 청년일경험 사업 우수기관 선정" },
+    { year: 2025, month: 12, content: "『ESG 공급망 실사관리사 1급』 자격시험 시행: 20명 합격" },
+    { 
+        year: 2025, month: 3, 
+        content: "『대한상공회의소』 주관 미래내일 청년일경험 사업 운영기관 선정",
+        details: ["인턴형: 한국철도공사, 한국농수산식품유통공사, 하나금융TI 등 11개 기관 308명", "프로젝트형: 한국철도공사, 셀트리온 69명"]
+    },
+    { 
+        year: 2025, month: 2, 
+        content: "『노사발전재단』 주관 일터혁신 컨설팅 운영 기관 선정(CNP 공동)",
+        details: ["(주) 서현 등 44개 기관 일터 혁신 컨설팅 수행"]
+    },
+    { year: 2024, month: 12, content: "항공기업 ESG 사내전문가 양성교육 실시 (항공우주산학융합원 발주)" },
+    { year: 2024, month: 12, content: "『사단법인 한국HRD협회』 업무 협약(MOU) 체결" },
+    { year: 2024, month: 9, content: "『대한상공회의소』 주관 미래내일 청년일경험 사업 운영기관 선정" },
+    { year: 2024, month: 7, content: "공공기관 안전활동 수행 평가 기업 컨설팅" },
+    { year: 2024, month: 5, content: "『한국경영기술지도사회』 업무 협약(MOU) 체결" },
+    { year: 2024, month: 3, content: "『한국기술교육대학교』 주관 STEP 학습관리시스템 운영기관 선정" },
+    { year: 2024, month: 2, content: "2024년 『한국산업인력공단』 주관 공정채용 컨설팅 사업 수주 (공인노무사회 공동)" },
+    { year: 2024, month: 1, content: "사단법인 ESG 노동사회협회(ELSA) 설립 허가 (고용노동부)" },
+    { year: 2023, month: 12, content: "사단법인 ESG 노동사회협회(ELSA) 창립 총회 개최" },
+];
+
 // Content Renderer
 const ContentArea: React.FC<{ category: string, title: string }> = ({ category, title }) => {
     
-    // Layout: Chairman's Greeting (Specific)
+    // Layout: Chairman's Greeting
     if (title === '이사장 인사말') {
         return (
             <div className="bg-white rounded-xl border border-gray-200 p-8 md:p-12 shadow-sm min-h-[500px]">
@@ -62,18 +123,12 @@ const ContentArea: React.FC<{ category: string, title: string }> = ({ category, 
                 <div className="flex flex-col lg:flex-row gap-10 items-start">
                     {/* Profile Section */}
                     <div className="w-full lg:w-1/3 flex flex-col items-center flex-shrink-0">
-                        {/* 
-                            Photo Container 
-                            - Uses aspect-[3/4] for a professional portrait look.
-                            - object-[65%_center] focuses on the right-center where the person is in the provided landscape photo.
-                        */}
                         <div className="w-full aspect-[3/4] max-w-[300px] bg-gray-100 rounded-2xl overflow-hidden shadow-lg mb-6 relative border border-gray-200">
                              <img 
                                 src="/chairman.jpg" 
                                 alt="이성기 이사장" 
                                 className="w-full h-full object-cover object-[65%_center]"
                                 onError={(e) => {
-                                    // Fallback if image is missing
                                     e.currentTarget.style.display = 'none'; 
                                     const parent = e.currentTarget.parentElement;
                                     if(parent) {
@@ -139,9 +194,85 @@ const ContentArea: React.FC<{ category: string, title: string }> = ({ category, 
                                 <p className="text-lg font-bold text-gray-900">(사)ESG노동사회협회 이사장</p>
                                 <p className="text-3xl font-serif font-bold mt-1 text-[#2F4F4F]">이 성 기</p>
                             </div>
-                            {/* Signature Placeholder if needed */}
                         </div>
                     </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Layout: Key Members (주요 회원)
+    if (title === '주요 회원') {
+        return (
+            <div className="bg-white rounded-xl border border-gray-200 p-8 md:p-12 shadow-sm min-h-[500px]">
+                <h3 className="text-3xl font-bold text-[#2F4F4F] mb-8 pb-4 border-b border-gray-100">{title}</h3>
+                
+                <div className="space-y-16">
+                    {memberGroups.map((group, idx) => (
+                        <div key={idx} className="animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+                            <div className="mb-6">
+                                <h4 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-2">
+                                    <div className="w-1.5 h-8 bg-[#D4FF3F] rounded-full"></div>
+                                    {group.title}
+                                </h4>
+                                <p className="text-gray-600 pl-4">{group.desc}</p>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 gap-4">
+                                {group.members.map((member, mIdx) => (
+                                    <div key={mIdx} className="flex flex-col md:flex-row md:items-center bg-gray-50 p-5 rounded-lg border border-gray-100 hover:border-[#2F4F4F]/30 hover:shadow-md transition-all">
+                                        <div className="md:w-48 flex-shrink-0 mb-2 md:mb-0">
+                                            <span className="text-lg font-bold text-[#2F4F4F]">{member.name}</span>
+                                            <span className="text-sm text-gray-500 ml-2">({member.title})</span>
+                                        </div>
+                                        <div className="flex-grow text-gray-700 text-sm md:text-base border-l-0 md:border-l-2 border-gray-200 md:pl-4">
+                                            {member.desc}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    // Layout: History (협회 연혁)
+    if (title === '협회 연혁') {
+        return (
+            <div className="bg-white rounded-xl border border-gray-200 p-8 md:p-12 shadow-sm min-h-[500px]">
+                <h3 className="text-3xl font-bold text-[#2F4F4F] mb-12 pb-4 border-b border-gray-100">{title}</h3>
+                
+                <div className="relative border-l-2 border-[#2F4F4F]/20 ml-4 md:ml-8 space-y-12">
+                    {historyData.map((item, idx) => (
+                        <div key={idx} className="relative pl-8 md:pl-12 group">
+                            {/* Dot */}
+                            <div className="absolute -left-[9px] top-1.5 w-[18px] h-[18px] bg-white border-4 border-[#2F4F4F] rounded-full group-hover:scale-125 group-hover:bg-[#D4FF3F] transition-all duration-300"></div>
+                            
+                            {/* Content */}
+                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
+                                <div className="flex-shrink-0 w-24 font-bold text-[#2F4F4F] text-lg">
+                                    {item.year}. {String(item.month).padStart(2, '0')}
+                                </div>
+                                <div className="flex-grow pb-1">
+                                    <p className="text-lg font-bold text-gray-800 mb-1 group-hover:text-[#2F4F4F] transition-colors">
+                                        {item.content}
+                                    </p>
+                                    {item.details && (
+                                        <ul className="mt-2 space-y-1">
+                                            {item.details.map((detail, dIdx) => (
+                                                <li key={dIdx} className="text-sm text-gray-600 flex items-start gap-2">
+                                                    <span className="w-1 h-1 rounded-full bg-gray-400 mt-2 flex-shrink-0"></span>
+                                                    <span>{detail}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         );
