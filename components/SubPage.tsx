@@ -57,9 +57,9 @@ const memberGroups = [
         desc: "정부 정책 수립 및 집행의 최고위급 경험을 바탕으로, 기업에 가장 실효성 있는 정책 대응 전략을 제시합니다.",
         members: [
             { name: "이성기 박사", title: "IT정책경영학", desc: "전 고용노동부 차관 및 서울지방고용노동청장 (35년 경력), 고용노동정책 및 ESG 전략 전문가" },
-            { name: "나영돈 박사", title: "노동경제학", desc: "전 한국고용정보원 이사장 및 고용노동부 고용정책실장 (34년 경력), HRD·HRM 및 국제노동기준 전문가" },
-            { name: "황기돈 박사", title: "노동경제학", desc: "전 한국노동교육원 사무총장 및 한국고용정보원 본부장 (30년 경력), 독일공급망실사법 및 노사관계 전문가" },
-            { name: "송홍석 교수", title: "숙명여대", desc: "전 중앙노동위원회 사무처장 및 고용노동부 직업능력개발국장 (30년 경력), 중대재해 및 노동법 전문가" },
+            { name: "나영돈 박사", title: "노동경제학", desc: "전 한국고용정보원 이사장 및 고용노동부 고용정책실장 (35년 경력), HRD·HRM 및 국제노동기준 전문가" },
+            { name: "황기돈 박사", title: "노동경제학", desc: "전 한국노동교육원 사무총장 및 한국고용정보원 본부장 (35년 경력), 독일공급망실사법 및 노사관계 전문가" },
+            { name: "송홍석 교수", title: "숙명여대", desc: "전 중앙노동위원회 사무처장 및 고용노동부 직업능력개발국장 (35년 경력), 중대재해 및 노동법 전문가" },
         ]
     },
     {
@@ -68,7 +68,7 @@ const memberGroups = [
         members: [
             { name: "함병호 박사", title: "산업안전", desc: "전 고용노동부 화학안전과장 및 인천북부지청장 (35년 경력), 위험성평가 및 화학안전 전문가" },
             { name: "이준원 박사", title: "산업안전", desc: "현 숭실대학교 교수 및 전 안전보건공단 본부장 (35년 경력), 중대재해 예방 및 안전관리 수준 평가 전문가" },
-            { name: "양선모 박사", title: "산업공학", desc: "CSDDD·ESG 경영진단 및 수준 평가, ERP 컨설팅 전문가 (30년 경력)" },
+            { name: "양선모 박사", title: "산업공학", desc: "CSDDD·ESG 경영진단 및 수준 평가, ERP 컨설팅 전문가 (35년 경력)" },
             { name: "강병노 박사", title: "기술지도사", desc: "공급망 실사, 탄소배출권 및 ESG 진단 평가 전문가 (30년 경력)" },
             { name: "이종재 박사", title: "현 PSI 대표", desc: "전 이투데이 대표, ESG 경영 평가·교육 및 공급망 실사 전반 전문가" },
         ]
@@ -88,8 +88,8 @@ const memberGroups = [
 
 // Data for History
 const historyData = [
-    { year: 2025, month: 12, content: "미래내일 청년일경험 사업 우수기관 선정" },
-    { year: 2025, month: 12, content: "『ESG 공급망 실사관리사 1급』 자격시험 시행: 20명 합격" },
+    { year: 2025, month: 12, content: "미래내일 청년일경험 사업 우수기관 선정 (예정)" },
+    { year: 2025, month: 12, content: "『ESG 공급망 실사관리사 1급』 자격시험 시행: 20명 배출 (예정)" },
     { 
         year: 2025, month: 3, 
         content: "『대한상공회의소』 주관 미래내일 청년일경험 사업 운영기관 선정",
@@ -123,18 +123,22 @@ const ContentArea: React.FC<{ category: string, title: string }> = ({ category, 
                 <div className="flex flex-col lg:flex-row gap-10 items-start">
                     {/* Profile Section */}
                     <div className="w-full lg:w-1/3 flex flex-col items-center flex-shrink-0">
+                        {/* Inserted the Chairman Image */}
                         <div className="w-full aspect-[3/4] max-w-[300px] bg-gray-100 rounded-2xl overflow-hidden shadow-lg mb-6 relative border border-gray-200">
                              <img 
                                 src="/chairman.jpg" 
                                 alt="이성기 이사장" 
-                                className="w-full h-full object-cover object-[65%_center]"
+                                className="w-full h-full object-cover object-top"
                                 onError={(e) => {
                                     e.currentTarget.style.display = 'none'; 
                                     const parent = e.currentTarget.parentElement;
                                     if(parent) {
                                         parent.innerHTML = `
                                             <div class="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-200">
-                                                <svg class="w-20 h-20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                                                <div class="text-center">
+                                                    <svg class="w-20 h-20 mx-auto" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                                                    <p class="text-sm mt-2">이미지 준비중</p>
+                                                </div>
                                             </div>
                                         `;
                                     }

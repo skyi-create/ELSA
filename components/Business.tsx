@@ -26,7 +26,8 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '청년층에게는 실무 경험을, 중장년층에게는 재취업과 계속 고용의 기회를 제공하여 노동 시장의 활력을 불어넣습니다.',
     color: '#3B82F6', // Blue
-    aiPrompt: 'A minimal and clean vector illustration of a young professional and a senior professional shaking hands or working together, symbolizing employment support. Flat design, solid colors, white background. No text.',
+    // Changed to 3D Animation Style
+    aiPrompt: 'A friendly and high-quality 3D animation style illustration (Pixar-like) of a young professional and a senior professional shaking hands or working together in a bright office. Soft lighting, cute characters, vibrant colors.',
     fallbackImage: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80'
   },
   {
@@ -41,7 +42,8 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: 'ESG 공급망 실사 관리사 자격 과정을 운영하며, 산업 현장에 필요한 실무 중심의 안전보건 및 노동인권 교육을 제공합니다.',
     color: '#10B981', // Emerald
-    aiPrompt: 'A minimal and clean vector illustration of a certificate scroll, a graduation cap, and a safety helmet. Symbolizing education and qualifications. Flat design, solid colors, white background. No text.',
+    // Changed to 3D Animation Style
+    aiPrompt: 'A friendly and high-quality 3D animation style illustration of a graduation cap, a certificate, and a safety helmet floating in a bright educational setting. Soft 3D render, cute style.',
     fallbackImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'
   },
   {
@@ -56,7 +58,8 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '기업의 일터 혁신을 지원하고, 급변하는 산업 환경에 대응하기 위한 ESG 경영 전략 및 중대재해 예방 솔루션을 제시합니다.',
     color: '#F59E0B', // Amber
-    aiPrompt: 'A minimal and clean vector illustration of a business strategy chart, a lightbulb, and a gear. Symbolizing consulting and innovation. Flat design, solid colors, white background. No text.',
+    // Changed to 3D Animation Style
+    aiPrompt: 'A friendly and high-quality 3D animation style illustration of business strategy icons like a lightbulb, graphs, and gears. 3D icon set style, vibrant orange and yellow tones.',
     fallbackImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80'
   },
   {
@@ -71,7 +74,8 @@ export const businessDomains: Domain[] = [
     ],
     fullDetails: '글로벌 공급망 기준에 부합하는 ESG 실사 및 평가를 수행하고, 투명하고 신뢰성 있는 인증 및 검증 서비스를 제공합니다.',
     color: '#8B5CF6', // Violet
-    aiPrompt: 'A minimal and clean vector illustration of a magnifying glass checking a checklist document, with a shield icon. Symbolizing due diligence and verification. Flat design, solid colors, white background. No text.',
+    // Changed to 3D Animation Style
+    aiPrompt: 'A friendly and high-quality 3D animation style illustration of a magnifying glass checking a document with a shield. 3D render, soft purple tones, secure and safe atmosphere.',
     fallbackImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80'
   },
   ];
@@ -84,8 +88,8 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
 
   useEffect(() => {
     let isMounted = true;
-    // Version key to manage prompt updates.
-    const storageKey = `elsa_biz_img_${item.id}_v7`; 
+    // Version key to manage prompt updates. Changed to v8 for animation style
+    const storageKey = `elsa_biz_img_${item.id}_v8`; 
 
     const generate = async () => {
       // 1. Check LocalStorage first
@@ -115,7 +119,7 @@ const AIImage: React.FC<{ item: Domain }> = ({ item }) => {
           model: 'gemini-2.5-flash-image',
           contents: {
             parts: [
-               { text: `${item.aiPrompt} Make it a high-quality, clean 2D vector animation style illustration. Use the accent color ${item.color} as a primary tone. White background.` }
+               { text: `${item.aiPrompt} Ensure the style is consistent 3D Animation / Pixar style. Use the accent color ${item.color} as a primary tone. White background.` }
             ]
           },
         });
@@ -308,11 +312,15 @@ export const BusinessDetail: React.FC<BusinessDetailProps> = ({ id, onBack }) =>
                  
                  {isSpecialItem && (
                     <div className="w-full mb-6">
+                        {/* Inserted the Youth Job Experience Infographic */}
                         <img 
                           src="/youth_job_experience.png" 
                           alt="2025 청년 일경험 지원사업 (인턴형) 완전 정복" 
-                          className="w-full h-auto rounded-lg border border-gray-200 shadow-sm"
-                          onError={(e) => e.currentTarget.style.display = 'none'}
+                          className="w-full h-auto rounded-xl border border-gray-200 shadow-md hover:shadow-lg transition-shadow"
+                          onError={(e) => {
+                             e.currentTarget.style.display = 'none';
+                             console.warn("Image /youth_job_experience.png not found.");
+                          }}
                         />
                     </div>
                  )}
